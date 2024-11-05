@@ -1,9 +1,7 @@
 <script setup lang="ts">
-const a = 1;
-
-console.log(a);
+const a = ref(1);
 </script>
 
 <template>
-  <div>home</div>
+  <div>{{ a }}</div>
 </template>

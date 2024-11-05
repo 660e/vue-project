@@ -11,7 +11,7 @@ export default [
   },
   {
     name: 'app/files-to-ignore',
-    ignores: ['eslint.config.js', '**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    ignores: ['auto-imports.d.ts', 'eslint.config.js', '**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
 
   eslint.configs.recommended,
