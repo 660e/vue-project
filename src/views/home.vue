@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const a = ref(1);
+const msg = ref('Hello world!');
 </script>
 
 <template>
-  <div>{{ a }}</div>
+  <h1 class="text-3xl font-bold underline">{{ msg }}</h1>
 </template>
