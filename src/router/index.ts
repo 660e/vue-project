@@ -5,8 +5,16 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: () => import('@/views/home.vue'),
+    },
+    {
+      path: '/playground',
+      children: [
+        {
+          path: 'ajax',
+          component: () => import('@/views/playground/ajax.vue'),
+        },
+      ],
     },
   ],
 });
