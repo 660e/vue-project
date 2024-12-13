@@ -11,8 +11,8 @@ const router = createRouter({
       path: '/playground',
       children: [
         {
-          path: 'ajax',
-          component: () => import('@/views/playground/ajax.vue'),
+          path: 'upload',
+          component: () => import('@/views/playground/upload.vue'),
         },
       ],
     },
