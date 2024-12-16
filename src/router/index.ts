@@ -11,6 +11,10 @@ const router = createRouter({
       path: '/playground',
       children: [
         {
+          path: 'abort',
+          component: () => import('@/views/playground/abort.vue'),
+        },
+        {
           path: 'upload',
           component: () => import('@/views/playground/upload.vue'),
         },
