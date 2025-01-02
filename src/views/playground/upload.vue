@@ -26,11 +26,9 @@ const fileChange = (event: Event) => {
 </script>
 
 <template>
-  <div class="p-4 text-sm leading-none text-neutral-700">
-    <div class="flex items-center gap-2">
-      <input @change="fileChange" class="hidden" type="file" ref="inputRef" />
-      <button @click="inputRef.click()" class="px-4 py-2 rounded duration-300 border border-blue-400 bg-blue-200 hover:bg-blue-300">Upload</button>
-      <span>{{ progress * 100 }}%</span>
-    </div>
+  <div class="p-4 text-sm leading-none flex items-center gap-2 text-neutral-700">
+    <input @change="fileChange" class="hidden" type="file" ref="inputRef" />
+    <button @click="inputRef.click()" class="px-4 py-2 rounded duration-300 border border-blue-400 bg-blue-200 hover:bg-blue-300">Upload</button>
+    <span>{{ progress * 100 }}%</span>
   </div>
 </template>

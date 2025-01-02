@@ -21,10 +21,8 @@ const download = () => {
 </script>
 
 <template>
-  <div class="p-4 text-sm leading-none text-neutral-700">
-    <div class="flex items-center gap-2">
-      <button @click="download" class="px-4 py-2 rounded duration-300 border border-blue-400 bg-blue-200 hover:bg-blue-300">Download</button>
-      <span>{{ progress * 100 }}%</span>
-    </div>
+  <div class="p-4 text-sm leading-none flex items-center gap-2 text-neutral-700">
+    <button @click="download" class="px-4 py-2 rounded duration-300 border border-blue-400 bg-blue-200 hover:bg-blue-300">Download</button>
+    <span>{{ progress * 100 }}%</span>
   </div>
 </template>
