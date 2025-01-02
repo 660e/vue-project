@@ -8,6 +8,10 @@ export default {
       component: () => import('@/views/playground/abort.vue'),
     },
     {
+      path: 'contextmenu',
+      component: () => import('@/views/playground/contextmenu.vue'),
+    },
+    {
       path: 'download',
       component: () => import('@/views/playground/download.vue'),
     },
