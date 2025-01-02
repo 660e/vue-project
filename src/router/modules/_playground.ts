@@ -5,19 +5,19 @@ export default {
   children: [
     {
       path: 'abort',
-      component: () => import('@/views/playground/abort.vue'),
+      component: () => import('@/views/_playground/abort.vue'),
     },
     {
       path: 'contextmenu',
-      component: () => import('@/views/playground/contextmenu.vue'),
+      component: () => import('@/views/_playground/contextmenu.vue'),
     },
     {
       path: 'download',
-      component: () => import('@/views/playground/download.vue'),
+      component: () => import('@/views/_playground/download.vue'),
     },
     {
       path: 'upload',
-      component: () => import('@/views/playground/upload.vue'),
+      component: () => import('@/views/_playground/upload.vue'),
     },
   ],
 } as RouteRecordRaw;
