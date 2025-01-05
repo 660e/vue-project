@@ -10,7 +10,6 @@ const download = () => {
     .get('https://run.mocky.io/v3/05764dba-7eea-462c-9705-0fc007a1808a', {
       responseType: 'blob',
       onDownloadProgress: (progressEvent) => {
-        console.log(progressEvent);
         progress.value = progressEvent.progress ?? 0;
       },
     })
