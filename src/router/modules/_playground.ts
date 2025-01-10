@@ -5,31 +5,31 @@ export default {
   children: [
     {
       path: 'abort',
-      component: () => import('@/views/_playground/Abort.vue'),
+      component: () => import('@/pages/_playground/Abort.vue'),
     },
     {
       path: 'contextmenu',
-      component: () => import('@/views/_playground/ContextMenu.vue'),
+      component: () => import('@/pages/_playground/ContextMenu.vue'),
     },
     {
       path: 'download',
-      component: () => import('@/views/_playground/Download.vue'),
+      component: () => import('@/pages/_playground/Download.vue'),
     },
     {
       path: 'indexed-db',
-      component: () => import('@/views/_playground/IndexedDB.vue'),
+      component: () => import('@/pages/_playground/IndexedDB.vue'),
     },
     {
       path: 'upload',
-      component: () => import('@/views/_playground/Upload.vue'),
+      component: () => import('@/pages/_playground/Upload.vue'),
     },
     {
       path: 'web-assembly',
-      component: () => import('@/views/_playground/WebAssembly.vue'),
+      component: () => import('@/pages/_playground/WebAssembly.vue'),
     },
     {
       path: 'web-workers',
-      component: () => import('@/views/_playground/WebWorkers.vue'),
+      component: () => import('@/pages/_playground/WebWorkers.vue'),
     },
   ],
 } as RouteRecordRaw;
