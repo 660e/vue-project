@@ -1,17 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router';
 
-declare module 'vue-router' {
-  interface RouteMeta {
-    label?: string;
-  }
-}
-
-interface RouteModule {
-  default: RouteRecordRaw;
-}
-
-const modules = import.meta.glob<RouteModule>('./modules/*.ts', { eager: true });
+const modules = import.meta.glob<{ default: RouteRecordRaw }>('./modules/*.ts', { eager: true });
 const routes: RouteRecordRaw[] = Object.values(modules).map((module) => module.default);
 
 const router = createRouter({
