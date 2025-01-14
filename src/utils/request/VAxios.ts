@@ -30,4 +30,8 @@ export class VAxios {
       },
     );
   }
+
+  get<T>(url: string): Promise<T> {
+    return this.instance.get(url);
+  }
 }
