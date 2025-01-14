@@ -1,14 +1,17 @@
 import axios from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 
 export class VAxios {
+  private readonly config;
   private instance;
 
-  constructor() {
-    this.instance = axios.create();
+  constructor(config: AxiosRequestConfig) {
+    this.config = config;
+    this.instance = axios.create(config);
     this.setupInterceptors();
   }
 
-  setupInterceptors() {
+  private setupInterceptors() {
     this.instance.interceptors.request.use(
       (config) => {
         return config;
