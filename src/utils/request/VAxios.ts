@@ -31,7 +31,19 @@ export class VAxios {
     );
   }
 
+  post<T>(url: string): Promise<T> {
+    return this.instance.post(url);
+  }
+
   get<T>(url: string): Promise<T> {
     return this.instance.get(url);
+  }
+
+  put<T>(url: string): Promise<T> {
+    return this.instance.put(url);
+  }
+
+  delete<T>(url: string): Promise<T> {
+    return this.instance.delete(url);
   }
 }
