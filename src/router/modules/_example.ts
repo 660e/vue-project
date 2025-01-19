@@ -4,8 +4,8 @@ export default {
   path: '/example',
   children: [
     {
-      path: 'contextmenu',
-      component: () => import('@/views/_example/ContextMenu.vue'),
+      path: 'random-user',
+      component: () => import('@/views/_example/RandomUser.vue'),
     },
   ],
 } as RouteRecordRaw;

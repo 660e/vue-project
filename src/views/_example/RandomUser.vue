@@ -1,7 +1,7 @@
 <script setup lang="ts">
-console.log('ContextMenu');
+console.log('randomuser');
 </script>
 
 <template>
-  <div>ContextMenu</div>
+  <div>randomuser</div>
 </template>
