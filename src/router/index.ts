@@ -6,13 +6,7 @@ const routes: RouteRecordRaw[] = Object.values(modules).map((module) => module.d
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      component: () => import('@/pages/home.vue'),
-    },
-    ...routes,
-  ],
+  routes,
 });
 
 export default router;
