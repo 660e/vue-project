@@ -1,7 +1,12 @@
 <script setup lang="ts">
-console.log('randomuser');
+import { randomuser } from '@/apis/_example';
+
+const data = ref();
+onMounted(async () => {
+  data.value = await randomuser();
+});
 </script>
 
 <template>
-  <div>randomuser</div>
+  <pre>{{ data }}</pre>
 </template>
