@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 interface RequestOptions {
   responseInterceptors?: (response: AxiosResponse) => AxiosResponse;
@@ -25,10 +25,31 @@ class Request {
 
     this.instance.interceptors.response.use(
       (response) => {
-        console.log(response);
-        return response;
+        const { responseInterceptors } = response.config as InternalAxiosRequestConfig & RequestOptions;
+        if (responseInterceptors) {
+          return responseInterceptors(response);
+        } else {
+          return response.data;
+        }
       },
       (error) => {
+        const { response } = error;
+        if (response) {
+          switch (response.status) {
+            case 401:
+              console.log('401');
+              break;
+            case 404:
+              console.log('404');
+              break;
+            case 500:
+              console.log('500');
+              break;
+            default:
+              console.log('default');
+              break;
+          }
+        }
         return Promise.reject(error);
       },
     );
@@ -51,4 +72,6 @@ class Request {
   }
 }
 
-export const request = new Request({});
+export const request = new Request({
+  timeout: 10000,
+});
