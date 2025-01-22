@@ -1,12 +1,14 @@
 import axios from 'axios';
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+
+interface RequestOptions {
+  responseInterceptors?: (response: AxiosResponse) => AxiosResponse;
+}
 
 class Request {
-  private readonly config;
   private instance;
 
   constructor(config: AxiosRequestConfig) {
-    this.config = config;
     this.instance = axios.create(config);
     this.setupInterceptors();
   }
@@ -23,6 +25,7 @@ class Request {
 
     this.instance.interceptors.response.use(
       (response) => {
+        console.log(response);
         return response;
       },
       (error) => {
@@ -31,20 +34,20 @@ class Request {
     );
   }
 
-  post<T>(url: string): Promise<T> {
-    return this.instance.post(url);
+  post<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance.post(url, config);
   }
 
-  get<T>(url: string): Promise<T> {
-    return this.instance.get(url);
+  get<T>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.instance.get(url, { ...config, ...options });
   }
 
-  put<T>(url: string): Promise<T> {
-    return this.instance.put(url);
+  put<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance.put(url, config);
   }
 
-  delete<T>(url: string): Promise<T> {
-    return this.instance.delete(url);
+  delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    return this.instance.delete(url, { ...config });
   }
 }
 
