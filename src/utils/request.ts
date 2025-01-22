@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 interface RequestOptions {
+  requestInterceptors?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
   responseInterceptors?: (response: AxiosResponse) => AxiosResponse;
 }
 
@@ -16,7 +17,13 @@ class Request {
   private setupInterceptors() {
     this.instance.interceptors.request.use(
       (config) => {
-        return config;
+        const { requestInterceptors } = config as InternalAxiosRequestConfig & RequestOptions;
+        if (requestInterceptors) {
+          return requestInterceptors(config);
+        } else {
+          config.headers.Authorization = 'Bearer token';
+          return config;
+        }
       },
       (error) => {
         return Promise.reject(error);
@@ -26,7 +33,11 @@ class Request {
     this.instance.interceptors.response.use(
       (response) => {
         const { responseInterceptors } = response.config as InternalAxiosRequestConfig & RequestOptions;
-        return responseInterceptors ? responseInterceptors(response) : response.data;
+        if (responseInterceptors) {
+          return responseInterceptors(response);
+        } else {
+          return response.data;
+        }
       },
       (error) => {
         switch (error.response.status) {
