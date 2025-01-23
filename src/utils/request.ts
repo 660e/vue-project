@@ -21,7 +21,7 @@ class Request {
         if (requestInterceptors) {
           return requestInterceptors(config);
         } else {
-          config.headers.Authorization = 'Bearer token';
+          config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
           return config;
         }
       },
@@ -59,19 +59,23 @@ class Request {
     );
   }
 
-  post<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  post<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.post(url, config);
   }
 
-  get<T>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get<T = any>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.instance.get(url, { ...config, ...options });
   }
 
-  put<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  put<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.put(url, config);
   }
 
-  delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.delete(url, { ...config });
   }
 }

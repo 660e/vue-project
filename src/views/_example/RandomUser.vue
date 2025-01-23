@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { randomuser } from '@/apis/_example';
 
-const data = ref();
+const seed = ref();
 onMounted(async () => {
-  data.value = await randomuser();
-  const { results, info } = data.value;
+  const { results, info } = await randomuser();
+  seed.value = info.seed;
+
   console.log(results);
   console.log(info);
 });
 </script>
 
 <template>
-  <pre>{{ data }}</pre>
+  <pre>{{ seed }}</pre>
 </template>
