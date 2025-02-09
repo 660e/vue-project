@@ -1,5 +1,3 @@
 <template>
-  <div class="h-screen flex justify-center items-center">
-    <img class="h-20" src="@/assets/logo.svg" />
-  </div>
+  <div>Lorem ipsum dolor sit amet.</div>
 </template>
