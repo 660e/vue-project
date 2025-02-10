@@ -12,5 +12,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <pre>{{ seed }}</pre>
+  <div>
+    <Example />
+    <pre>{{ seed }}</pre>
+  </div>
 </template>

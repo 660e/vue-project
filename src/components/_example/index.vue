@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineOptions({
+  name: 'Example',
+});
+</script>
+
 <template>
-  <div>_example</div>
+  <div>Example Component</div>
 </template>
