@@ -7,5 +7,9 @@ export default {
       path: 'random-user',
       component: () => import('@/views/_example/RandomUser.vue'),
     },
+    {
+      path: 'utils-playground',
+      component: () => import('@/views/_example/UtilsPlayground.vue'),
+    },
   ],
 } as RouteRecordRaw;
