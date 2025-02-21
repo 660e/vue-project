@@ -8,6 +8,10 @@ export default {
       component: () => import('@/views/_example/DeepSeek.vue'),
     },
     {
+      path: 'import-meta',
+      component: () => import('@/views/_example/ImportMeta.vue'),
+    },
+    {
       path: 'playground',
       component: () => import('@/views/_example/Playground.vue'),
     },

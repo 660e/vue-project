@@ -3,8 +3,8 @@
   "include": ["auto-imports.d.ts", "env.d.ts", "src/**/*", "src/**/*.vue"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "noEmit": true,
     "paths": {
       "@/*": ["./src/*"]
