@@ -4,12 +4,16 @@ export default {
   path: '/example',
   children: [
     {
-      path: 'random-user',
-      component: () => import('@/views/_example/RandomUser.vue'),
+      path: 'deepseek',
+      component: () => import('@/views/_example/DeepSeek.vue'),
     },
     {
-      path: 'utils-playground',
-      component: () => import('@/views/_example/UtilsPlayground.vue'),
+      path: 'playground',
+      component: () => import('@/views/_example/Playground.vue'),
+    },
+    {
+      path: 'randomuser',
+      component: () => import('@/views/_example/RandomUser.vue'),
     },
   ],
 } as RouteRecordRaw;
