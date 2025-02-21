@@ -6,7 +6,7 @@ const env = {
   DEV: import.meta.env.DEV,
   SSR: import.meta.env.SSR,
 
-  DEEPSEEK_KEY: import.meta.env.VITE_DEEPSEEK_KEY,
+  DEEPSEEK_API_KEY: import.meta.env.VITE_DEEPSEEK_API_KEY,
 };
 </script>
 
