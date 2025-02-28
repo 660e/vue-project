@@ -4,7 +4,7 @@ const submit = async () => {
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
+        'Authorization': `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -19,20 +19,40 @@ const submit = async () => {
       }),
     });
 
-    if (!response.body) return;
+    if (!response.ok || !response.body) {
+      console.log(response.status);
+      console.log(response.statusText);
+      return;
+    }
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
+    let buffer = '';
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
 
-      console.log(decoder.decode(value, { stream: true }));
+      buffer += decoder.decode(value, { stream: true });
+
+      const chunks = buffer.split('\n\n');
+      buffer = chunks.pop() || '';
+
+      for (const chunk of chunks) {
+        const data = chunk.replace('data: ', '').trim();
+        if (data === '[DONE]') return;
+
+        try {
+          console.log(JSON.parse(data));
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
   } catch (error) {
     console.log(error);
   } finally {
+    console.log('finally');
   }
 };
 </script>
