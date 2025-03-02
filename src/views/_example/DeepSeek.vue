@@ -1,5 +1,9 @@
 <script setup lang="ts">
+const prompt = ref('');
+
 const sendPrompt = async () => {
+  if (!prompt.value.trim()) return;
+
   try {
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
@@ -10,7 +14,7 @@ const sendPrompt = async () => {
       body: JSON.stringify({
         messages: [
           {
-            content: 'Hello',
+            content: prompt.value,
             role: 'user',
           },
         ],
@@ -62,15 +66,14 @@ const sendPrompt = async () => {
     <div class="h-full flex flex-col justify-center mx-auto w-full lg:w-[800px]">
       <div class="hidden flex-1"></div>
       <div class="p-4">
-        <h1 class="text-3xl leading-none text-center">What can I help with?</h1>
+        <h1 class="mb-4 text-3xl leading-none text-center">What can I help with?</h1>
         <div class="rounded-3xl p-2 shadow border border-neutral-200">
-          <form>
-            <textarea class="w-full bg-red-500/20" placeholder="Ask anything"></textarea>
-            <div class="flex">
-              <div class="flex-1"></div>
-              <button @click="sendPrompt" class="h-8 w-8 rounded-full bg-black"></button>
-            </div>
-          </form>
+          <div class="p-2 bg-blue-500/10">
+            <textarea v-model="prompt" class="block outline-0 w-full resize-none bg-red-500/10" placeholder="Ask anything" rows="1"></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black" type="submit"></button>
+          </div>
         </div>
       </div>
     </div>
