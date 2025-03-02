@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const submit = async () => {
+const sendPrompt = async () => {
   try {
     const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
@@ -58,10 +58,21 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="flex p-4">
-    <div class="flex-1/2">
-      <button @click="submit" class="rounded px-2 py-1 cursor-pointer bg-neutral-200 hover:opacity-80">Submit</button>
+  <div class="h-screen">
+    <div class="h-full flex flex-col justify-center mx-auto w-full lg:w-[800px]">
+      <div class="hidden flex-1"></div>
+      <div class="p-4">
+        <h1 class="text-3xl leading-none text-center">What can I help with?</h1>
+        <div class="rounded-3xl p-2 shadow border border-neutral-200">
+          <form>
+            <textarea class="w-full bg-red-500/20" placeholder="Ask anything"></textarea>
+            <div class="flex">
+              <div class="flex-1"></div>
+              <button @click="sendPrompt" class="h-8 w-8 rounded-full bg-black"></button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    <div class="flex-1/2"></div>
   </div>
 </template>

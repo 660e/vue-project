@@ -27,8 +27,8 @@ const tree = [
 <template>
   <div>
     <div class="flex">
-      <pre class="flex-1/2">{{ tree }}</pre>
-      <pre class="flex-1/2">{{ flattenTree(tree) }}</pre>
+      <pre class="flex-1">{{ tree }}</pre>
+      <pre class="flex-1">{{ flattenTree(tree) }}</pre>
     </div>
   </div>
 </template>
