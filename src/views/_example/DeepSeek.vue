@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const completions = ref([]);
 const prompt = ref('');
 
 const sendPrompt = async () => {
@@ -63,13 +64,20 @@ const sendPrompt = async () => {
 
 <template>
   <div class="h-screen">
-    <div class="h-full flex flex-col justify-center mx-auto w-full lg:w-[800px]">
-      <div class="hidden flex-1"></div>
-      <div class="p-4">
-        <h1 class="mb-4 text-3xl leading-none text-center">What can I help with?</h1>
+    <div class="h-full flex flex-col justify-center">
+      <div v-if="completions.length" class="flex-1 overflow-y-auto bg-yellow-50">
+        <div class="p-4 mx-auto w-full lg:w-[800px] bg-red-50">
+          <div class="flex justify-end">
+            <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-neutral-100">Hello</div>
+          </div>
+          <div :style="{ height: '2000px' }"></div>
+        </div>
+      </div>
+      <div class="p-4 mx-auto w-full lg:w-[800px]">
+        <h1 v-if="completions.length === 0" class="mb-4 text-3xl leading-none text-center">What can I help with?</h1>
         <div class="rounded-3xl p-2 shadow border border-neutral-200">
-          <div class="p-2 bg-blue-500/10">
-            <textarea v-model="prompt" class="block outline-0 w-full resize-none bg-red-500/10" placeholder="Ask anything" rows="1"></textarea>
+          <div class="p-2 bg-blue-50">
+            <textarea v-model="prompt" class="block outline-0 w-full resize-none bg-green-50" placeholder="Ask anything" rows="1"></textarea>
           </div>
           <div class="flex justify-end">
             <button @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black" type="submit"></button>
