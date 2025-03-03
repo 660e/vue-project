@@ -73,7 +73,7 @@ watch(prompt, async () => {
 </script>
 
 <template>
-  <div class="h-screen">
+  <div class="h-screen text-base">
     <div class="h-full flex flex-col justify-center">
       <div v-if="completions.length" class="flex-1 overflow-y-auto bg-yellow-50">
         <div class="p-4 mx-auto w-full lg:w-[800px] bg-red-50">
@@ -84,19 +84,21 @@ watch(prompt, async () => {
         </div>
       </div>
       <div class="p-4 mx-auto w-full lg:w-[800px]">
-        <h1 v-if="completions.length === 0" class="mb-4 text-3xl leading-none text-center">What can I help with?</h1>
-        <div class="rounded-3xl p-2 shadow border border-neutral-200">
+        <h1 v-if="completions.length === 0" class="mb-4 text-3xl leading-none text-center">How can I help you today?</h1>
+        <div class="rounded-3xl p-2 border border-neutral-200">
           <div class="pl-2 py-2">
             <textarea
               v-model="prompt"
               :rows="textareaRows"
               class="block outline-0 w-full resize-none"
-              placeholder="Ask anything"
+              placeholder="Message DeepSeek"
               ref="textareaRef"
             ></textarea>
           </div>
-          <div class="flex justify-end">
-            <button @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black" type="submit"></button>
+          <div class="flex">
+            <button class="h-8 px-2 rounded-full text-xs cursor-pointer border border-neutral-200">DeepThink</button>
+            <div class="flex-1"></div>
+            <button @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black"></button>
           </div>
         </div>
       </div>
