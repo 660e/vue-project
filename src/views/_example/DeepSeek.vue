@@ -1,9 +1,19 @@
 <script setup lang="ts">
-const completions = ref([]);
+interface ChatMessage {
+  content: string;
+  role: 'ASSISTANT' | 'USER';
+  thinking_content?: string;
+}
+
+const chatMessages = ref<ChatMessage[]>([]);
 const prompt = ref('');
 
 const sendPrompt = async () => {
   if (!prompt.value.trim()) return;
+
+  const assistantMessage: ChatMessage = { content: '', role: 'ASSISTANT' };
+  chatMessages.value.push({ content: prompt.value, role: 'USER' });
+  chatMessages.value.push(assistantMessage);
 
   try {
     const response = await fetch('https://api.deepseek.com/chat/completions', {
@@ -75,16 +85,16 @@ watch(prompt, async () => {
 <template>
   <div class="h-screen text-base">
     <div class="h-full flex flex-col justify-center">
-      <div v-if="completions.length" class="flex-1 overflow-y-auto bg-yellow-50">
+      <div v-if="chatMessages.length" class="flex-1 overflow-y-auto bg-yellow-50">
         <div class="p-4 mx-auto w-full lg:w-[800px] bg-red-50">
           <div class="flex justify-end">
-            <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-neutral-100">Hello</div>
+            <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">Hello</div>
           </div>
           <div :style="{ height: '2000px' }"></div>
         </div>
       </div>
       <div class="p-4 mx-auto w-full lg:w-[800px]">
-        <h1 v-if="completions.length === 0" class="mb-4 text-3xl leading-none text-center">How can I help you today?</h1>
+        <h1 v-if="chatMessages.length === 0" class="mb-4 text-3xl leading-none text-center">How can I help you today?</h1>
         <div class="rounded-3xl p-3 border border-neutral-200">
           <div class="px-1">
             <textarea
