@@ -60,6 +60,16 @@ const sendPrompt = async () => {
     console.log('finally');
   }
 };
+
+const textareaRef = ref();
+const textareaRows = ref(2);
+watch(prompt, async () => {
+  textareaRows.value = 2;
+
+  await nextTick();
+  const computedStyle = window.getComputedStyle(textareaRef.value);
+  textareaRows.value = Math.min(textareaRef.value.scrollHeight / parseInt(computedStyle.lineHeight), 10);
+});
 </script>
 
 <template>
@@ -76,8 +86,14 @@ const sendPrompt = async () => {
       <div class="p-4 mx-auto w-full lg:w-[800px]">
         <h1 v-if="completions.length === 0" class="mb-4 text-3xl leading-none text-center">What can I help with?</h1>
         <div class="rounded-3xl p-2 shadow border border-neutral-200">
-          <div class="p-2 bg-blue-50">
-            <textarea v-model="prompt" class="block outline-0 w-full resize-none bg-green-50" placeholder="Ask anything" rows="1"></textarea>
+          <div class="pl-2 py-2">
+            <textarea
+              v-model="prompt"
+              :rows="textareaRows"
+              class="block outline-0 w-full resize-none"
+              placeholder="Ask anything"
+              ref="textareaRef"
+            ></textarea>
           </div>
           <div class="flex justify-end">
             <button @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black" type="submit"></button>
