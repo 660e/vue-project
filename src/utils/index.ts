@@ -1,2 +1,3 @@
-export * from './data.ts';
-export * from './request.ts';
+export * from './data';
+export * from './deepseek';
+export * from './request';

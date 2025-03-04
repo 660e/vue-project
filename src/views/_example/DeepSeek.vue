@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { streamCompletion } from '@/utils';
+
 interface ChatMessage {
   content: string;
   role: 'ASSISTANT' | 'USER';
@@ -7,6 +9,8 @@ interface ChatMessage {
 
 const chatMessages = ref<ChatMessage[]>([]);
 const prompt = ref('');
+
+streamCompletion();
 
 const sendPrompt = async () => {
   if (!prompt.value.trim()) return;
