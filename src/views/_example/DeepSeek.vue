@@ -3,6 +3,7 @@ import { streamCompletion } from '@/utils';
 
 interface ChatMessage {
   content: string;
+  inserted_at: number;
   role: 'ASSISTANT' | 'USER';
   thinking_content?: string;
 }
@@ -10,68 +11,21 @@ interface ChatMessage {
 const chatMessages = ref<ChatMessage[]>([]);
 const prompt = ref('');
 
-streamCompletion();
-
 const sendPrompt = async () => {
   if (!prompt.value.trim()) return;
 
-  const assistantMessage: ChatMessage = { content: '', role: 'ASSISTANT' };
-  chatMessages.value.push({ content: prompt.value, role: 'USER' });
-  chatMessages.value.push(assistantMessage);
+  const assistantMessage = ref<ChatMessage>({ content: '', inserted_at: 0, role: 'ASSISTANT' });
+  chatMessages.value.push({ content: prompt.value, inserted_at: new Date().getTime() / 1000, role: 'USER' });
+  chatMessages.value.push(assistantMessage.value);
 
-  try {
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messages: [
-          {
-            content: prompt.value,
-            role: 'user',
-          },
-        ],
-        model: 'deepseek-chat',
-        stream: true,
-      }),
-    });
+  const stream = await streamCompletion({
+    messages: [{ content: prompt.value, role: 'user' }],
+    model: 'deepseek-chat',
+  });
 
-    if (!response.ok || !response.body) {
-      console.log(response.status);
-      console.log(response.statusText);
-      return;
-    }
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-
-      const chunks = buffer.split('\n\n');
-      buffer = chunks.pop() || '';
-
-      for (const chunk of chunks) {
-        const data = chunk.replace('data: ', '').trim();
-        if (data === '[DONE]') return;
-
-        try {
-          console.log(JSON.parse(data));
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  } finally {
-    console.log('finally');
+  for await (const chunk of stream) {
+    assistantMessage.value.content += chunk.choices[0]?.delta.content || '';
+    assistantMessage.value.inserted_at = chunk.created;
   }
 };
 
@@ -91,9 +45,14 @@ watch(prompt, async () => {
     <div class="h-full flex flex-col justify-center">
       <div v-if="chatMessages.length" class="flex-1 overflow-y-auto bg-yellow-50">
         <div class="p-4 mx-auto w-full lg:w-[800px] bg-red-50">
-          <div class="flex justify-end">
-            <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">Hello</div>
-          </div>
+          <template v-for="chatMessage in chatMessages" :key="chatMessage.inserted_at">
+            <div v-if="chatMessage.role === 'USER'" class="flex justify-end">
+              <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">Hello</div>
+            </div>
+            <div v-if="chatMessage.role === 'ASSISTANT'">
+              <pre>{{ chatMessage }}</pre>
+            </div>
+          </template>
           <div :style="{ height: '2000px' }"></div>
         </div>
       </div>
