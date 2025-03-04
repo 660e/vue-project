@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { streamCompletion } from '@/utils';
 
-interface ChatMessage {
+interface IChatMessage {
   content: string;
-  inserted_at: number;
   role: 'ASSISTANT' | 'USER';
   thinking_content?: string;
 }
 
-const chatMessages = ref<ChatMessage[]>([]);
+const chatMessages = ref<IChatMessage[]>([]);
 const prompt = ref('');
 
 const sendPrompt = async () => {
   if (!prompt.value.trim()) return;
 
-  const assistantMessage = ref<ChatMessage>({ content: '', inserted_at: 0, role: 'ASSISTANT' });
-  chatMessages.value.push({ content: prompt.value, inserted_at: new Date().getTime() / 1000, role: 'USER' });
+  const assistantMessage = ref<IChatMessage>({ content: '', role: 'ASSISTANT' });
+  chatMessages.value.push({ content: prompt.value, role: 'USER' });
   chatMessages.value.push(assistantMessage.value);
 
   const stream = await streamCompletion({
@@ -25,7 +24,6 @@ const sendPrompt = async () => {
 
   for await (const chunk of stream) {
     assistantMessage.value.content += chunk.choices[0]?.delta.content || '';
-    assistantMessage.value.inserted_at = chunk.created;
   }
 };
 
@@ -45,7 +43,7 @@ watch(prompt, async () => {
     <div class="h-full flex flex-col justify-center">
       <div v-if="chatMessages.length" class="flex-1 overflow-y-auto bg-yellow-50">
         <div class="p-4 mx-auto w-full lg:w-[800px] bg-red-50">
-          <template v-for="chatMessage in chatMessages" :key="chatMessage.inserted_at">
+          <template v-for="(chatMessage, index) in chatMessages" :key="index">
             <div v-if="chatMessage.role === 'USER'" class="flex justify-end">
               <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">Hello</div>
             </div>

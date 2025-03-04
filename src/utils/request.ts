@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-interface RequestOptions {
+interface IRequestOptions {
   requestInterceptors?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
   responseInterceptors?: (response: AxiosResponse) => AxiosResponse;
 }
@@ -11,7 +11,7 @@ class Request {
   private setupInterceptors() {
     this.instance.interceptors.request.use(
       (config) => {
-        const { requestInterceptors } = config as InternalAxiosRequestConfig & RequestOptions;
+        const { requestInterceptors } = config as InternalAxiosRequestConfig & IRequestOptions;
         if (requestInterceptors) {
           return requestInterceptors(config);
         } else {
@@ -26,7 +26,7 @@ class Request {
 
     this.instance.interceptors.response.use(
       (response) => {
-        const { responseInterceptors } = response.config as InternalAxiosRequestConfig & RequestOptions;
+        const { responseInterceptors } = response.config as InternalAxiosRequestConfig & IRequestOptions;
         if (responseInterceptors) {
           return responseInterceptors(response);
         } else {
@@ -63,7 +63,7 @@ class Request {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get<T = any>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+  get<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
     return this.instance.get(url, { ...config, ...options });
   }
 

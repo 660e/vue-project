@@ -1,4 +1,4 @@
-interface Payload {
+interface IPayload {
   messages: {
     content: string;
     role: 'user';
@@ -6,7 +6,7 @@ interface Payload {
   model: 'deepseek-chat' | 'deepseek-reasoner';
 }
 
-export async function streamCompletion(payload: Payload) {
+export async function streamCompletion(payload: IPayload) {
   const response = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
     headers: {
