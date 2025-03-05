@@ -36,6 +36,7 @@ export default defineConfigWithVueTs(pluginVue.configs['flat/recommended'], vueT
     'vue/multi-word-component-names': 'off',
     'vue/no-empty-component-block': 'error',
     'vue/no-static-inline-styles': ['error', { allowBinding: true }],
+    'vue/no-v-html': 'off',
     'vue/require-macro-variable-name': 'error',
     'vue/singleline-html-element-content-newline': 'off',
   },

@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import { streamCompletion } from '@/utils';
-
-interface IChatMessage {
-  content: string;
-  role: 'ASSISTANT' | 'USER';
-  thinking_content?: string;
-}
+import { streamCompletion, markdownToHTML } from '@/utils';
+import type { IChatMessage } from '@/utils';
 
 const chatMessages = ref<IChatMessage[]>([]);
 const prompt = ref('');
@@ -41,14 +36,14 @@ watch(prompt, async () => {
 <template>
   <div class="h-screen text-base">
     <div class="h-full flex flex-col justify-center">
-      <div v-if="chatMessages.length" class="flex-1 overflow-y-auto bg-yellow-50">
-        <div class="p-4 mx-auto w-full lg:w-[800px] bg-red-50">
+      <div v-if="chatMessages.length" class="flex-1 overflow-y-auto">
+        <div class="p-4 space-y-4 mx-auto w-full lg:w-[800px] bg-yellow-50">
           <template v-for="(chatMessage, index) in chatMessages" :key="index">
             <div v-if="chatMessage.role === 'USER'" class="flex justify-end">
-              <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">Hello</div>
+              <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">{{ chatMessage.content }}</div>
             </div>
-            <div v-if="chatMessage.role === 'ASSISTANT'">
-              <pre>{{ chatMessage }}</pre>
+            <div v-else-if="chatMessage.role === 'ASSISTANT'" class="bg-red-50">
+              <div v-html="markdownToHTML(chatMessage.content)"></div>
             </div>
           </template>
           <div :style="{ height: '2000px' }"></div>

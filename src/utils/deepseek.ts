@@ -1,3 +1,11 @@
+import { Marked } from 'marked';
+
+export interface IChatMessage {
+  content: string;
+  role: 'ASSISTANT' | 'USER';
+  thinking_content?: string;
+}
+
 interface IPayload {
   messages: {
     content: string;
@@ -51,4 +59,10 @@ export async function streamCompletion(payload: IPayload) {
       }
     },
   };
+}
+
+const marked = new Marked();
+
+export function markdownToHTML(content: string) {
+  return marked.parse(content);
 }
