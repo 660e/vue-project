@@ -4,7 +4,7 @@ import { useExampleStore } from '@/stores';
 import { author } from '@/utils';
 import PKG from '../../../package.json';
 
-const seed = ref();
+const seed = ref('');
 const exampleStore = useExampleStore();
 
 onMounted(async () => {

@@ -14,7 +14,7 @@ interface IPayload {
   model: 'deepseek-chat' | 'deepseek-reasoner';
 }
 
-export async function streamCompletion(payload: IPayload) {
+export async function streamCompletion(payload: IPayload, signal?: AbortSignal) {
   const response = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
     headers: {
@@ -22,6 +22,7 @@ export async function streamCompletion(payload: IPayload) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ ...payload, stream: true }),
+    signal,
   });
 
   if (!response.ok || !response.body) {

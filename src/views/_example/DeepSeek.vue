@@ -2,24 +2,42 @@
 import { streamCompletion, markdownToHTML } from '@/utils';
 import type { IChatMessage } from '@/utils';
 
-const chatMessages = ref<IChatMessage[]>([]);
 const prompt = ref('');
+const chatMessages = ref<IChatMessage[]>([]);
+const isLoading = ref(false);
+const abortController = ref<AbortController>();
 
 const sendPrompt = async () => {
-  if (!prompt.value.trim()) return;
+  if (!prompt.value.trim() || isLoading.value) return;
 
-  const assistantMessage = ref<IChatMessage>({ content: '', role: 'ASSISTANT' });
-  chatMessages.value.push({ content: prompt.value, role: 'USER' });
-  chatMessages.value.push(assistantMessage.value);
+  try {
+    isLoading.value = true;
+    abortController.value = new AbortController();
 
-  const stream = await streamCompletion({
-    messages: [{ content: prompt.value, role: 'user' }],
-    model: 'deepseek-chat',
-  });
+    const assistantMessage = ref<IChatMessage>({ content: '', role: 'ASSISTANT' });
+    chatMessages.value.push({ content: prompt.value, role: 'USER' });
+    chatMessages.value.push(assistantMessage.value);
 
-  for await (const chunk of stream) {
-    assistantMessage.value.content += chunk.choices[0]?.delta.content || '';
+    const stream = await streamCompletion(
+      {
+        messages: [{ content: prompt.value, role: 'user' }],
+        model: 'deepseek-chat',
+      },
+      abortController.value.signal,
+    );
+
+    for await (const chunk of stream) {
+      assistantMessage.value.content += chunk.choices[0]?.delta.content || '';
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
   }
+};
+
+const cancelStream = () => {
+  abortController.value?.abort();
 };
 
 const textareaRef = ref();
@@ -55,6 +73,7 @@ watch(prompt, async () => {
           <div class="px-1">
             <textarea
               v-model="prompt"
+              :disabled="isLoading"
               :rows="textareaRows"
               class="block outline-0 w-full resize-none"
               placeholder="Message DeepSeek"
@@ -64,7 +83,8 @@ watch(prompt, async () => {
           <div class="pt-3 flex">
             <button class="h-8 px-2 rounded-full text-xs cursor-pointer border border-neutral-200">DeepThink</button>
             <div class="flex-1"></div>
-            <button @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black"></button>
+            <button v-if="isLoading" @click="cancelStream" class="h-8 w-8 rounded-full cursor-pointer bg-red-500"></button>
+            <button v-else @click="sendPrompt" class="h-8 w-8 rounded-full cursor-pointer bg-black"></button>
           </div>
         </div>
       </div>
