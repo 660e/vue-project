@@ -14,7 +14,9 @@ interface IPayload {
   model: 'deepseek-chat' | 'deepseek-reasoner';
 }
 
-export async function streamCompletion(payload: IPayload, signal?: AbortSignal) {
+export async function streamCompletion(payload: IPayload) {
+  const controller = new AbortController();
+
   const response = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
     headers: {
@@ -22,7 +24,7 @@ export async function streamCompletion(payload: IPayload, signal?: AbortSignal) 
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ ...payload, stream: true }),
-    signal,
+    signal: controller.signal,
   });
 
   if (!response.ok || !response.body) {
@@ -37,28 +39,31 @@ export async function streamCompletion(payload: IPayload, signal?: AbortSignal) 
   let buffer = '';
 
   return {
-    async *[Symbol.asyncIterator]() {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+    stream: {
+      async *[Symbol.asyncIterator]() {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-        buffer += decoder.decode(value, { stream: true });
+          buffer += decoder.decode(value, { stream: true });
 
-        const chunks = buffer.split('\n\n');
-        buffer = chunks.pop() || '';
+          const chunks = buffer.split('\n\n');
+          buffer = chunks.pop() || '';
 
-        for (const chunk of chunks) {
-          const data = chunk.replace('data: ', '').trim();
-          if (data === '[DONE]') return;
+          for (const chunk of chunks) {
+            const data = chunk.replace('data: ', '').trim();
+            if (data === '[DONE]') return;
 
-          try {
-            yield JSON.parse(data);
-          } catch (error) {
-            console.log(error);
+            try {
+              yield JSON.parse(data);
+            } catch (error) {
+              console.log(error);
+            }
           }
         }
-      }
+      },
     },
+    controller,
   };
 }
 

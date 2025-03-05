@@ -12,19 +12,17 @@ const sendPrompt = async () => {
 
   try {
     isLoading.value = true;
-    abortController.value = new AbortController();
 
     const assistantMessage = ref<IChatMessage>({ content: '', role: 'ASSISTANT' });
     chatMessages.value.push({ content: prompt.value, role: 'USER' });
     chatMessages.value.push(assistantMessage.value);
 
-    const stream = await streamCompletion(
-      {
-        messages: [{ content: prompt.value, role: 'user' }],
-        model: 'deepseek-chat',
-      },
-      abortController.value.signal,
-    );
+    const { stream, controller } = await streamCompletion({
+      messages: [{ content: prompt.value, role: 'user' }],
+      model: 'deepseek-chat',
+    });
+
+    abortController.value = controller;
 
     for await (const chunk of stream) {
       assistantMessage.value.content += chunk.choices[0]?.delta.content || '';
