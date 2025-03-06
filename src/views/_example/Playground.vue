@@ -1,27 +1,16 @@
 <script setup lang="ts">
 import { flattenTree, is } from '@/utils';
 
-const tree = [
-  {
-    id: 1,
-    name: 'A',
-    children: [
-      {
-        id: 2,
-        name: 'B',
-        children: [
-          { id: 4, name: 'D', children: [] },
-          { id: 5, name: 'E' },
-        ],
-      },
-      {
-        id: 3,
-        name: 'C',
-        children: [{ id: 6, name: 'F', children: [] }],
-      },
-    ],
-  },
-];
+const objectTree = {
+  id: 1,
+  name: 'A',
+  children: [
+    { id: 2, name: 'B', children: [{ id: 3, name: 'C' }] },
+    { id: 4, name: 'D' },
+  ],
+};
+
+const arrayTree = [structuredClone(objectTree)];
 </script>
 
 <template>
@@ -43,8 +32,12 @@ const tree = [
       <div>{{ is.undefined(undefined) }}</div>
     </div>
     <div class="flex">
-      <pre class="flex-1">{{ tree }}</pre>
-      <pre class="flex-1">{{ flattenTree(tree) }}</pre>
+      <pre class="flex-1">{{ objectTree }}</pre>
+      <pre class="flex-1">{{ flattenTree(objectTree) }}</pre>
+    </div>
+    <div class="flex">
+      <pre class="flex-1">{{ arrayTree }}</pre>
+      <pre class="flex-1">{{ flattenTree(arrayTree) }}</pre>
     </div>
   </div>
 </template>
