@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const is = {
   array: (value: any) => Array.isArray(value),
+  author: (value: any) => value === '明'.charCodeAt(0).toString(16),
   bigint: (value: any) => Object.prototype.toString.call(value) === '[object BigInt]',
   boolean: (value: any) => Object.prototype.toString.call(value) === '[object Boolean]',
   date: (value: any) => Object.prototype.toString.call(value) === '[object Date]',

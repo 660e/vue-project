@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { randomuser } from '@/apis/_example';
 import { useExampleStore } from '@/stores';
-import { author } from '@/utils';
 import PKG from '../../../package.json';
 
 const seed = ref('');
@@ -13,7 +12,6 @@ onMounted(async () => {
 
   console.log(results);
   console.log(info);
-  console.log(author());
 });
 </script>
 

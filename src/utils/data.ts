@@ -1,9 +1,7 @@
-export function author() {
-  return '明'.charCodeAt(0).toString(16);
-}
+import { is } from './index';
 
 export function flattenTree<T>(
-  data: T[],
+  data: T | T[],
   options: {
     childrenKey: keyof T;
   } = {
@@ -12,5 +10,9 @@ export function flattenTree<T>(
 ): T[] {
   console.log(options);
 
-  return data;
+  if (is.array(data)) {
+    return data;
+  }
+
+  return [data];
 }
