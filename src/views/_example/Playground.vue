@@ -32,9 +32,11 @@ const tree = [
       <div>{{ is.boolean(true) }} {{ is.boolean(undefined) }}</div>
       <div>{{ is.date(new Date()) }} {{ is.date(undefined) }}</div>
       <div>{{ is.function(() => {}) }} {{ is.function(undefined) }}</div>
+      <div>{{ is.map(new Map()) }} {{ is.map(undefined) }}</div>
       <div>{{ is.null(null) }} {{ is.null(undefined) }}</div>
       <div>{{ is.number(1) }} {{ is.number(undefined) }}</div>
       <div>{{ is.object({}) }} {{ is.object(undefined) }}</div>
+      <div>{{ is.set(new Set()) }} {{ is.set(undefined) }}</div>
       <div>{{ is.string('') }} {{ is.string(undefined) }}</div>
       <div>{{ is.symbol(Symbol()) }} {{ is.symbol(undefined) }}</div>
       <div>{{ is.undefined(undefined) }}</div>
