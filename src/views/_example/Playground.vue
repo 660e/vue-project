@@ -28,7 +28,7 @@ const tree = [
   <div>
     <div>
       <div>{{ is.array([1, 2, 3]) }} {{ is.array(undefined) }}</div>
-      <div>{{ is.boolean(123n) }} {{ is.bigint(undefined) }}</div>
+      <div>{{ is.bigint(123n) }} {{ is.bigint(undefined) }}</div>
       <div>{{ is.boolean(true) }} {{ is.boolean(undefined) }}</div>
       <div>{{ is.date(new Date()) }} {{ is.date(undefined) }}</div>
       <div>{{ is.function(() => {}) }} {{ is.function(undefined) }}</div>
