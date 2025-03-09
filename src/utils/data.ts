@@ -16,9 +16,7 @@ function flattenObjectTree<T>(data: T, childrenKey: keyof T) {
 }
 
 function flattenArrayTree<T>(data: T[], childrenKey: keyof T) {
-  console.log(childrenKey);
-
-  return data;
+  return data.flatMap((node) => flattenObjectTree(node, childrenKey));
 }
 
 export function flattenTree<T>(data: T | T[], options: { childrenKey: keyof T } = { childrenKey: 'children' as keyof T }) {
