@@ -1,13 +1,13 @@
-// import { is } from './index';
+import { is } from './index';
 
-export function flattenTree<T>(
+function flattenObjectTree<T>(
   data: T,
   options: {
     childrenKey: keyof T;
   } = {
     childrenKey: 'children' as keyof T,
   },
-): T[] {
+) {
   const source = [data];
   const result: T[] = [];
 
@@ -19,9 +19,33 @@ export function flattenTree<T>(
     result.push(node);
   }
 
-  // if (is.array(data)) {
-  //   return data;
-  // }
-
   return result;
+}
+
+function flattenArrayTree<T>(
+  data: T | T[],
+  options: {
+    childrenKey: keyof T;
+  } = {
+    childrenKey: 'children' as keyof T,
+  },
+) {
+  console.log(options);
+
+  return data;
+}
+
+export function flattenTree<T>(
+  data: T | T[],
+  options: {
+    childrenKey: keyof T;
+  } = {
+    childrenKey: 'children' as keyof T,
+  },
+) {
+  if (is.array(data)) {
+    return flattenArrayTree(data, options);
+  }
+
+  return flattenObjectTree(data, options);
 }
