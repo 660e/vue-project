@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { flattenTree, is } from '@/utils';
+import { buildTree, flattenTree, is } from '@/utils';
 
 const objectTree = {
   id: 1,
@@ -11,11 +11,18 @@ const objectTree = {
 };
 
 const arrayTree = [structuredClone(objectTree)];
+
+const flatData = [
+  { id: 1, name: 'A' },
+  { id: 2, name: 'B', parentId: 1 },
+  { id: 3, name: 'C', parentId: 2 },
+  { id: 4, name: 'D', parentId: 1 },
+];
 </script>
 
 <template>
   <div>
-    <div>
+    <div v-if="false">
       <div>{{ is.array([1, 2, 3]) }} {{ is.array(undefined) }}</div>
       <div>{{ is.author('660e') }} {{ is.author(undefined) }}</div>
       <div>{{ is.bigint(123n) }} {{ is.bigint(undefined) }}</div>
@@ -31,13 +38,17 @@ const arrayTree = [structuredClone(objectTree)];
       <div>{{ is.symbol(Symbol()) }} {{ is.symbol(undefined) }}</div>
       <div>{{ is.undefined(undefined) }}</div>
     </div>
-    <div class="flex">
+    <div v-if="false" class="flex">
       <pre class="flex-1">{{ objectTree }}</pre>
       <pre class="flex-1">{{ flattenTree(objectTree) }}</pre>
     </div>
-    <div class="flex">
+    <div v-if="false" class="flex">
       <pre class="flex-1">{{ arrayTree }}</pre>
       <pre class="flex-1">{{ flattenTree(arrayTree) }}</pre>
+    </div>
+    <div class="flex">
+      <pre class="flex-1">{{ flatData }}</pre>
+      <pre class="flex-1">{{ buildTree(flatData) }}</pre>
     </div>
   </div>
 </template>

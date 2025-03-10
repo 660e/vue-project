@@ -26,3 +26,7 @@ export function flattenTree<T>(data: T | T[], options: { childrenKey: keyof T } 
 
   return flattenObjectTree(data, options.childrenKey);
 }
+
+export function buildTree<T>(data: T[]) {
+  return data;
+}
