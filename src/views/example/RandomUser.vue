@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { randomuser } from '@/apis/_example';
+import { randomuser } from '@/apis/example';
 import { useExampleStore } from '@/stores';
 import PKG from '../../../package.json';
 
@@ -17,7 +17,8 @@ onMounted(async () => {
 
 <template>
   <div>
-    <Example />
+    <ExampleComponent1 />
+    <ExampleComponent2 />
     <pre>{{ PKG.version }}</pre>
     <pre>{{ seed }}</pre>
     <pre>{{ exampleStore }}</pre>

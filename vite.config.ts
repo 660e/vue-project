@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -13,6 +14,9 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-router'],
     }),
+
+    // https://github.com/unplugin/unplugin-vue-components
+    Components(),
 
     // https://tailwindcss.com/docs/installation/using-vite
     tailwindcss(),

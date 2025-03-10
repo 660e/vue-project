@@ -5,19 +5,19 @@ export default {
   children: [
     {
       path: 'deepseek',
-      component: () => import('@/views/_example/DeepSeek.vue'),
+      component: () => import('@/views/example/DeepSeek.vue'),
     },
     {
       path: 'import-meta',
-      component: () => import('@/views/_example/ImportMeta.vue'),
+      component: () => import('@/views/example/ImportMeta.vue'),
     },
     {
       path: 'playground',
-      component: () => import('@/views/_example/Playground.vue'),
+      component: () => import('@/views/example/Playground.vue'),
     },
     {
       path: 'randomuser',
-      component: () => import('@/views/_example/RandomUser.vue'),
+      component: () => import('@/views/example/RandomUser.vue'),
     },
   ],
 } as RouteRecordRaw;
