@@ -29,32 +29,23 @@ export function flattenTree<T>(data: T | T[], options: { childrenKey?: keyof T }
   return flattenObjectTree(data, childrenKey);
 }
 
-export function buildTree<T>(
-  data: T[],
-  options: {
-    childrenKey: string;
-    idKey: keyof T;
-    parentIdKey: keyof T;
-  } = {
-    childrenKey: 'children',
-    idKey: 'id' as keyof T,
-    parentIdKey: 'parentId' as keyof T,
-  },
-) {
+export function buildTree<T>(data: T[], options: { childrenKey?: string; idKey?: keyof T; parentIdKey?: keyof T } = {}) {
+  const { childrenKey = 'children', idKey = 'id' as keyof T, parentIdKey = 'parentId' as keyof T } = options;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map: any = {};
   const roots: T[] = [];
 
   data.forEach((item) => {
-    map[item[options.idKey]] = { ...item, [options.childrenKey]: [] };
+    map[item[idKey]] = { ...item, [childrenKey]: [] };
   });
 
   data.forEach((item) => {
-    const node = map[item[options.idKey]];
-    if (item[options.parentIdKey]) {
-      const parent = map[item[options.parentIdKey]];
+    const node = map[item[idKey]];
+    if (item[parentIdKey]) {
+      const parent = map[item[parentIdKey]];
       if (parent) {
-        parent[options.childrenKey].push(node);
+        parent[childrenKey].push(node);
       }
     } else {
       roots.push(node);
