@@ -22,7 +22,7 @@ const flatData = [
 
 <template>
   <div>
-    <div v-if="false">
+    <div>
       <div>{{ is.array([1, 2, 3]) }} {{ is.array(undefined) }}</div>
       <div>{{ is.author('660e') }} {{ is.author(undefined) }}</div>
       <div>{{ is.bigint(123n) }} {{ is.bigint(undefined) }}</div>
@@ -38,11 +38,11 @@ const flatData = [
       <div>{{ is.symbol(Symbol()) }} {{ is.symbol(undefined) }}</div>
       <div>{{ is.undefined(undefined) }}</div>
     </div>
-    <div v-if="false" class="flex">
+    <div class="flex">
       <pre class="flex-1">{{ objectTree }}</pre>
       <pre class="flex-1">{{ flattenTree(objectTree) }}</pre>
     </div>
-    <div v-if="false" class="flex">
+    <div class="flex">
       <pre class="flex-1">{{ arrayTree }}</pre>
       <pre class="flex-1">{{ flattenTree(arrayTree) }}</pre>
     </div>

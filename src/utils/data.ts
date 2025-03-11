@@ -34,7 +34,7 @@ export function buildTree<T>(data: T[], options: { childrenKey?: string; idKey?:
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map: any = {};
-  const roots: T[] = [];
+  const result: T[] = [];
 
   data.forEach((item) => {
     map[item[idKey]] = { ...item, [childrenKey]: [] };
@@ -48,9 +48,9 @@ export function buildTree<T>(data: T[], options: { childrenKey?: string; idKey?:
         parent[childrenKey].push(node);
       }
     } else {
-      roots.push(node);
+      result.push(node);
     }
   });
 
-  return roots;
+  return result;
 }
