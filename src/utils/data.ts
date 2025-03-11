@@ -19,19 +19,14 @@ function flattenArrayTree<T>(data: T[], childrenKey: keyof T) {
   return data.flatMap((node) => flattenObjectTree(node, childrenKey));
 }
 
-export function flattenTree<T>(
-  data: T | T[],
-  options: {
-    childrenKey: keyof T;
-  } = {
-    childrenKey: 'children' as keyof T,
-  },
-) {
+export function flattenTree<T>(data: T | T[], options: { childrenKey?: keyof T } = {}) {
+  const { childrenKey = 'children' as keyof T } = options;
+
   if (is.array(data)) {
-    return flattenArrayTree(data, options.childrenKey);
+    return flattenArrayTree(data, childrenKey);
   }
 
-  return flattenObjectTree(data, options.childrenKey);
+  return flattenObjectTree(data, childrenKey);
 }
 
 export function buildTree<T>(
