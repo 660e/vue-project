@@ -58,23 +58,23 @@ class Request {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  post<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.post(url, config);
+  post<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+    return this.instance({ method: 'post', url, ...config, ...options });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
-    return this.instance.get(url, { ...config, ...options });
+    return this.instance({ method: 'get', url, ...config, ...options });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  put<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.put(url, config);
+  put<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+    return this.instance({ method: 'put', url, ...config, ...options });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.delete(url, { ...config });
+  delete<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+    return this.instance({ method: 'delete', url, ...config, ...options });
   }
 }
 
