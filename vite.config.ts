@@ -16,7 +16,9 @@ export default defineConfig({
     }),
 
     // https://github.com/unplugin/unplugin-vue-components
-    Components(),
+    Components({
+      globs: ['src/components/*/index.vue', 'src/components/*.vue'],
+    }),
 
     // https://tailwindcss.com/docs/installation/using-vite
     tailwindcss(),
