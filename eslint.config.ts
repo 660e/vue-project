@@ -30,6 +30,7 @@ export default defineConfigWithVueTs(pluginVue.configs['flat/recommended'], vueT
         alphabetical: true,
       },
     ],
+    'vue/block-lang': 'off',
     'vue/custom-event-name-casing': ['error', 'kebab-case'],
     'vue/html-self-closing': ['error', { html: { normal: 'never', void: 'always' } }],
     'vue/max-attributes-per-line': 'off',
