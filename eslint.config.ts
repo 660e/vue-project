@@ -14,6 +14,9 @@ export default defineConfigWithVueTs(pluginVue.configs['flat/recommended'], vueT
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
 
+    // https://eslint.org/docs/latest/rules/
+    'no-case-declarations': 'error',
+
     // https://eslint.vuejs.org/rules/
     'vue/attributes-order': [
       'error',
