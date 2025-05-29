@@ -1,5 +1,5 @@
-import axios from 'axios';
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 interface IRequestOptions {
   requestInterceptors?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
@@ -14,10 +14,9 @@ class Request {
         const { requestInterceptors } = config as InternalAxiosRequestConfig & IRequestOptions;
         if (requestInterceptors) {
           return requestInterceptors(config);
-        } else {
-          config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-          return config;
         }
+        config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+        return config;
       },
       (error) => {
         return Promise.reject(error);
@@ -29,9 +28,8 @@ class Request {
         const { responseInterceptors } = response.config as InternalAxiosRequestConfig & IRequestOptions;
         if (responseInterceptors) {
           return responseInterceptors(response);
-        } else {
-          return response.data;
         }
+        return response.data;
       },
       (error) => {
         switch (error.response.status) {
@@ -45,7 +43,7 @@ class Request {
             console.log('500');
             break;
           default:
-            console.log('default');
+            console.log(error.response.status);
         }
         return Promise.reject(error);
       },

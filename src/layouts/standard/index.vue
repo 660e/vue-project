@@ -1,3 +1,3 @@
 <template>
-  <div>backstage</div>
+  <div>standard</div>
 </template>
