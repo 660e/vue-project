@@ -1,12 +1,12 @@
 import { Marked } from 'marked';
 
-export interface IChatMessage {
+export interface ChatMessage {
   content: string;
   role: 'ASSISTANT' | 'USER';
   thinking_content?: string;
 }
 
-interface IPayload {
+interface Payload {
   messages: {
     content: string;
     role: 'user';
@@ -14,7 +14,7 @@ interface IPayload {
   model: 'deepseek-chat' | 'deepseek-reasoner';
 }
 
-export async function streamCompletion(payload: IPayload) {
+export async function streamCompletion(payload: Payload) {
   const controller = new AbortController();
 
   const response = await fetch('https://api.deepseek.com/chat/completions', {

@@ -1,7 +1,7 @@
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
-interface IRequestOptions {
+interface RequestOptions {
   requestInterceptors?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
   responseInterceptors?: (response: AxiosResponse) => AxiosResponse;
 }
@@ -11,7 +11,7 @@ class Request {
   private setupInterceptors() {
     this.instance.interceptors.request.use(
       (config) => {
-        const { requestInterceptors } = config as InternalAxiosRequestConfig & IRequestOptions;
+        const { requestInterceptors } = config as InternalAxiosRequestConfig & RequestOptions;
         if (requestInterceptors) {
           return requestInterceptors(config);
         }
@@ -25,7 +25,7 @@ class Request {
 
     this.instance.interceptors.response.use(
       (response) => {
-        const { responseInterceptors } = response.config as InternalAxiosRequestConfig & IRequestOptions;
+        const { responseInterceptors } = response.config as InternalAxiosRequestConfig & RequestOptions;
         if (responseInterceptors) {
           return responseInterceptors(response);
         }
@@ -56,22 +56,22 @@ class Request {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  post<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+  post<T = any>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.instance({ method: 'post', url, ...config, ...options });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+  get<T = any>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.instance({ method: 'get', url, ...config, ...options });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  put<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+  put<T = any>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.instance({ method: 'put', url, ...config, ...options });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  delete<T = any>(url: string, config?: AxiosRequestConfig, options?: IRequestOptions): Promise<T> {
+  delete<T = any>(url: string, config?: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.instance({ method: 'delete', url, ...config, ...options });
   }
 }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { streamCompletion, markdownToHTML } from '@/utils';
-import type { IChatMessage } from '@/utils';
+import type { ChatMessage } from '@/utils';
 
 const prompt = ref('');
-const chatMessages = ref<IChatMessage[]>([]);
+const chatMessages = ref<ChatMessage[]>([]);
 const isLoading = ref(false);
 const abortController = ref<AbortController>();
 
@@ -13,7 +13,7 @@ const sendPrompt = async () => {
   try {
     isLoading.value = true;
 
-    const assistantMessage = ref<IChatMessage>({ content: '', role: 'ASSISTANT' });
+    const assistantMessage = ref<ChatMessage>({ content: '', role: 'ASSISTANT' });
     chatMessages.value.push({ content: prompt.value, role: 'USER' });
     chatMessages.value.push(assistantMessage.value);
 
