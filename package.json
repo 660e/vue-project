@@ -12,7 +12,6 @@
     "lint": "eslint .",
     "format": "prettier --write src/"
   },
-  "packageManager": "pnpm@10.17.0",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@vueuse/core": "^12.8.2",
