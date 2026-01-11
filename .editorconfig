@@ -1,4 +1,4 @@
-[*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue}]
+[*.{js,jsx,ts,tsx,vue,css}]
 charset = utf-8
 end_of_line = lf
 indent_size = 2
