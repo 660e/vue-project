@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "build:zip": "npm run build && node scripts/build-zip.js",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
@@ -33,6 +34,7 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
     "@vue/tsconfig": "^0.7.0",
+    "archiver": "^7.0.1",
     "eslint": "^9.39.3",
     "eslint-plugin-vue": "^9.33.0",
     "jiti": "^2.6.1",
