@@ -5,7 +5,7 @@ export default {
   children: [
     {
       path: 'deepseek',
-      component: () => import('@/views/example/Deepsseek.vue'),
+      component: () => import('@/views/example/Deepseek.vue'),
     },
     {
       path: 'import-meta',
