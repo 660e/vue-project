@@ -12,6 +12,10 @@ export default {
       component: () => import('@/views/example/ImportMeta.vue'),
     },
     {
+      path: 'lang-js',
+      component: () => import('@/views/example/LangJS.vue'),
+    },
+    {
       path: 'playground',
       component: () => import('@/views/example/Playground.vue'),
     },
