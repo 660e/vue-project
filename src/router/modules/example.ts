@@ -5,7 +5,7 @@ export default {
   children: [
     {
       path: 'deepseek',
-      component: () => import('@/views/example/DeepSeek.vue'),
+      component: () => import('@/views/example/Deepsseek.vue'),
     },
     {
       path: 'import-meta',
@@ -16,7 +16,7 @@ export default {
       component: () => import('@/views/example/Playground.vue'),
     },
     {
-      path: 'randomuser',
+      path: 'random-user',
       component: () => import('@/views/example/RandomUser.vue'),
     },
   ],
