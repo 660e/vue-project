@@ -7,6 +7,7 @@ const env = {
   SSR: import.meta.env.SSR,
 
   DEEPSEEK_API_KEY: import.meta.env.VITE_DEEPSEEK_API_KEY,
+  VITE_API_URL: import.meta.env.VITE_API_URL,
 };
 </script>
 
