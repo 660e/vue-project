@@ -53,7 +53,7 @@ watch(prompt, async () => {
   <div class="h-screen text-base">
     <div class="h-full flex flex-col justify-center">
       <div v-if="chatMessages.length" class="flex-1 overflow-y-auto">
-        <div class="p-4 space-y-4 mx-auto w-full lg:w-[800px] bg-yellow-50">
+        <div class="p-4 space-y-4 mx-auto w-full lg:w-200 bg-yellow-50">
           <template v-for="(chatMessage, index) in chatMessages" :key="index">
             <div v-if="chatMessage.role === 'USER'" class="flex justify-end">
               <div class="px-4 py-2 max-w-3/4 rounded-3xl bg-blue-100">{{ chatMessage.content }}</div>
@@ -65,7 +65,7 @@ watch(prompt, async () => {
           <div :style="{ height: '2000px' }"></div>
         </div>
       </div>
-      <div class="p-4 mx-auto w-full lg:w-[800px]">
+      <div class="p-4 mx-auto w-full lg:w-200">
         <h1 v-if="chatMessages.length === 0" class="mb-4 text-3xl leading-none text-center">How can I help you today?</h1>
         <div class="rounded-3xl p-3 border border-neutral-200">
           <div class="px-1">
