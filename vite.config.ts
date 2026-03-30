@@ -23,7 +23,13 @@ export default defineConfig({
     // https://tailwindcss.com/docs/installation/using-vite
     tailwindcss(),
 
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.includes('-'),
+        },
+      },
+    }),
     vueJsx(),
     vueDevTools(),
   ],

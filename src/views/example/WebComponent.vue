@@ -19,5 +19,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <web-component-demo class="text-blue-500" text="Web Component Demo" />
+  <div>
+    <ExampleComponent1 />
+    <ExampleComponent2 />
+    <web-component-demo class="text-blue-500" text="Web Component Demo" />
+  </div>
 </template>

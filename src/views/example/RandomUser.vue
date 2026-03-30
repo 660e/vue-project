@@ -17,8 +17,6 @@ onMounted(async () => {
 
 <template>
   <div>
-    <ExampleComponent1 />
-    <ExampleComponent2 />
     <pre>{{ PKG.version }}</pre>
     <pre>{{ seed }}</pre>
     <pre>{{ exampleStore }}</pre>
