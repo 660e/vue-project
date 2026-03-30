@@ -7,11 +7,11 @@ const map = ref<L.Map>();
 onMounted(() => {
   map.value = L.map('map', {
     attributionControl: false,
-    center: [36.71630859375, 108.63611429929733],
+    center: [41.75514499999999, 84.94633349999998],
     crs: CRS_4490,
     maxZoom: 22,
     minZoom: 4,
-    zoom: 5,
+    zoom: 6,
   });
   baseLayers.forEach((layer) => layer.addTo(map.value!));
 });
