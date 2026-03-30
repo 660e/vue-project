@@ -27,6 +27,28 @@ onMounted(async () => {
       }).addTo(map.value!);
 
       map.value!.fitBounds(provinceLayer.getBounds());
+
+      const maskLayer = L.polygon(
+        [
+          [
+            [90, -180],
+            [90, 180],
+            [-90, 180],
+            [-90, -180],
+          ],
+
+          getMaskCoordinates(data.features[0]),
+        ],
+        {
+          color: 'yellow',
+          weight: 0,
+          fillOpacity: 0,
+        },
+      ).addTo(map.value!);
+
+      maskLayer.on('click', () => {
+        console.log('点击了省外区域');
+      });
     });
   fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000_full.json')
     .then((response) => response.json())
@@ -46,6 +68,26 @@ onMounted(async () => {
       }).addTo(map.value!);
     });
 });
+
+function getMaskCoordinates(feature) {
+  const coordsArray = [];
+
+  if (feature.geometry.type === 'Polygon') {
+    // Polygon: 第一个环是外层，其余是洞
+    const polygonCoords = feature.geometry.coordinates.map((ring) => ring.map(([lng, lat]) => [lat, lng]));
+    coordsArray.push(...polygonCoords);
+  }
+
+  if (feature.geometry.type === 'MultiPolygon') {
+    // MultiPolygon: 每个 polygon 的第一个环是外层，其余是洞
+    feature.geometry.coordinates.forEach((polygon) => {
+      const polygonCoords = polygon.map((ring) => ring.map(([lng, lat]) => [lat, lng]));
+      coordsArray.push(...polygonCoords);
+    });
+  }
+
+  return coordsArray;
+}
 </script>
 
 <template>
