@@ -68,7 +68,7 @@ onMounted(async () => {
     .then((data) => {
       L.geoJSON(data, {
         style: {
-          // color: '#38f8ff',
+          color: '#38f8ff',
           weight: 1,
         },
         onEachFeature: ({ properties }, layer) => {
@@ -76,6 +76,23 @@ onMounted(async () => {
             const { adcode, name } = properties;
 
             console.log(`${adcode}-${name} `);
+          });
+
+          layer.on('mouseover', function () {
+            (layer as L.Path).setStyle({
+              color: 'red',
+              weight: 2, // 加粗
+              fillOpacity: 0.2, // 半透明填充
+            });
+          });
+
+          // 鼠标移出
+          layer.on('mouseout', function () {
+            (layer as L.Path).setStyle({
+              color: '#38f8ff',
+              weight: 1,
+              fillOpacity: 0,
+            });
           });
         },
       }).addTo(map.value!);
