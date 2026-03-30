@@ -125,3 +125,12 @@ function getMaskCoordinates(feature: MaskFeature): LatLng[][] {
     <div class="h-full" id="map"></div>
   </div>
 </template>
+
+<style>
+.leaflet-interactive {
+  transition:
+    fill-opacity 0.4s ease,
+    stroke 0.4s ease,
+    stroke-width 0.4s ease;
+}
+</style>
