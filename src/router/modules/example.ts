@@ -12,6 +12,10 @@ export default {
       component: () => import('@/views/example/ImportMeta.vue'),
     },
     {
+      path: 'leaflet',
+      component: () => import('@/views/example/Leaflet.vue'),
+    },
+    {
       path: 'playground',
       component: () => import('@/views/example/Playground.vue'),
     },
