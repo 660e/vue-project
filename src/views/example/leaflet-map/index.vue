@@ -1,6 +1,23 @@
 <script setup lang="ts">
-import { CRS_4490 } from '.';
+import { baseLayers, CRS_4490 } from '.';
 import L from 'leaflet';
+
+type LngLat = [number, number];
+type LatLng = L.LatLngTuple;
+
+interface PolygonGeometry {
+  type: 'Polygon';
+  coordinates: LngLat[][];
+}
+
+interface MultiPolygonGeometry {
+  type: 'MultiPolygon';
+  coordinates: LngLat[][][];
+}
+
+type MaskFeature = {
+  geometry: PolygonGeometry | MultiPolygonGeometry;
+};
 
 const map = ref<L.Map>();
 
@@ -13,7 +30,7 @@ onMounted(async () => {
     minZoom: 4,
     // zoom: 6,
   });
-  // baseLayers.forEach((layer) => layer.addTo(map.value!));
+  baseLayers.forEach((layer) => layer.addTo(map.value!));
 
   fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000.json')
     .then((response) => response.json())
@@ -28,23 +45,19 @@ onMounted(async () => {
 
       map.value!.fitBounds(provinceLayer.getBounds());
 
-      const maskLayer = L.polygon(
-        [
-          [
-            [90, -180],
-            [90, 180],
-            [-90, 180],
-            [-90, -180],
-          ],
+      const worldRing: LatLng[] = [
+        [90, -180],
+        [90, 180],
+        [-90, 180],
+        [-90, -180],
+      ];
+      const maskRings: LatLng[][] = [worldRing, ...getMaskCoordinates(data.features[0])];
 
-          getMaskCoordinates(data.features[0]),
-        ],
-        {
-          color: 'yellow',
-          weight: 0,
-          fillOpacity: 0,
-        },
-      ).addTo(map.value!);
+      const maskLayer = L.polygon(maskRings, {
+        color: 'yellow',
+        weight: 0,
+        fillOpacity: 0.2,
+      }).addTo(map.value!);
 
       maskLayer.on('click', () => {
         console.log('点击了省外区域');
@@ -69,19 +82,19 @@ onMounted(async () => {
     });
 });
 
-function getMaskCoordinates(feature) {
-  const coordsArray = [];
+function getMaskCoordinates(feature: MaskFeature): LatLng[][] {
+  const coordsArray: LatLng[][] = [];
 
   if (feature.geometry.type === 'Polygon') {
     // Polygon: 第一个环是外层，其余是洞
-    const polygonCoords = feature.geometry.coordinates.map((ring) => ring.map(([lng, lat]) => [lat, lng]));
+    const polygonCoords = feature.geometry.coordinates.map((ring) => ring.map(([lng, lat]: LngLat): LatLng => [lat, lng]));
     coordsArray.push(...polygonCoords);
   }
 
   if (feature.geometry.type === 'MultiPolygon') {
     // MultiPolygon: 每个 polygon 的第一个环是外层，其余是洞
     feature.geometry.coordinates.forEach((polygon) => {
-      const polygonCoords = polygon.map((ring) => ring.map(([lng, lat]) => [lat, lng]));
+      const polygonCoords = polygon.map((ring) => ring.map(([lng, lat]: LngLat): LatLng => [lat, lng]));
       coordsArray.push(...polygonCoords);
     });
   }
