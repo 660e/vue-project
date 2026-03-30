@@ -19,5 +19,9 @@ export default {
       path: 'random-user',
       component: () => import('@/views/example/RandomUser.vue'),
     },
+    {
+      path: 'web-component',
+      component: () => import('@/views/example/WebComponent.vue'),
+    },
   ],
 } as RouteRecordRaw;
