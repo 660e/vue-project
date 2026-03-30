@@ -40,5 +40,12 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
+    proxy: {
+      '/EGIS': {
+        target: 'https://dgs-servicebusgate1.yjglcloud.mem.gov.cn',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/EGIS/, ''),
+      },
+    },
   },
 });
