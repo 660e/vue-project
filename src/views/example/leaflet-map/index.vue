@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490 } from '.';
+import { CRS_4490 } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -13,14 +13,14 @@ onMounted(async () => {
     minZoom: 4,
     zoom: 6,
   });
-  baseLayers.forEach((layer) => layer.addTo(map.value!));
+  // baseLayers.forEach((layer) => layer.addTo(map.value!));
 
   fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000.json')
     .then((response) => response.json())
     .then((data) => {
       L.geoJSON(data, {
         style: {
-          color: '#38f8ff',
+          // color: '#38f8ff',
           weight: 3,
           fillOpacity: 0,
         },
@@ -31,8 +31,15 @@ onMounted(async () => {
     .then((data) => {
       L.geoJSON(data, {
         style: {
-          color: '#38f8ff',
+          // color: '#38f8ff',
           weight: 1,
+        },
+        onEachFeature: ({ properties }, layer) => {
+          layer.on('click', () => {
+            const { adcode, name } = properties;
+
+            console.log(`${adcode}-${name} `);
+          });
         },
       }).addTo(map.value!);
     });
