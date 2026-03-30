@@ -4,7 +4,7 @@ import L from 'leaflet';
 
 const map = ref<L.Map>();
 
-onMounted(() => {
+onMounted(async () => {
   map.value = L.map('map', {
     attributionControl: false,
     center: [41.75514499999999, 84.94633349999998],
@@ -14,6 +14,28 @@ onMounted(() => {
     zoom: 6,
   });
   baseLayers.forEach((layer) => layer.addTo(map.value!));
+
+  fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000.json')
+    .then((response) => response.json())
+    .then((data) => {
+      L.geoJSON(data, {
+        style: {
+          color: '#38f8ff',
+          weight: 3,
+          fillOpacity: 0,
+        },
+      }).addTo(map.value!);
+    });
+  fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000_full.json')
+    .then((response) => response.json())
+    .then((data) => {
+      L.geoJSON(data, {
+        style: {
+          color: '#38f8ff',
+          weight: 1,
+        },
+      }).addTo(map.value!);
+    });
 });
 </script>
 
