@@ -34,7 +34,7 @@ export async function getGeoData(adcode: string, isFull?: boolean) {
   };
 }
 
-export function getMaskCoordinates(features: Feature[]) {
+export function getMaskCoords(features: Feature[]) {
   features.forEach(({ geometry }) => {
     console.log(geometry.coordinates);
     console.log(geometry.type);

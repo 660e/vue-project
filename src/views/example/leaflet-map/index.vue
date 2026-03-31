@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490, getGeoData, getMaskCoordinates } from '.';
+import { CRS_4490, getGeoData, getMaskCoords } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -12,7 +12,7 @@ onMounted(async () => {
     minZoom: 4,
     zoomControl: false,
   });
-  baseLayers.forEach((layer) => layer.addTo(map.value!));
+  // baseLayers.forEach((layer) => layer.addTo(map.value!));
 
   await getData('650000');
 });
@@ -22,44 +22,36 @@ const getData = async (adcode: string) => {
   const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
     style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
   });
-  const maskCoords = getMaskCoordinates(wrapperGeoData.json.features);
+  const maskCoords = getMaskCoords(wrapperGeoData.json.features);
 
   console.log(maskCoords);
 
   map.value?.addLayer(wrapperLayer);
   map.value?.fitBounds(wrapperLayer.getBounds());
 
+  if (!wrapperGeoData.isLeaf) {
+    const childrenGeoData = await getGeoData(adcode, true);
+    const childrenLayer = L.geoJSON(childrenGeoData.json, {
+      style: { color: '#38f8ff', fillOpacity: 0.2, weight: 1 },
+      onEachFeature: ({ properties }, layer) => {
+        layer.on('click', async () => {
+          console.log(`${properties.adcode}: ${properties.name}`);
+        });
+        layer.on('mouseover', () => {
+          (layer as L.Path).setStyle({ fillColor: '#ffffff', fillOpacity: 0.4 });
+        });
+        layer.on('mouseout', () => {
+          (layer as L.Path).setStyle({ fillColor: '#38f8ff', fillOpacity: 0.2 });
+        });
+      },
+    });
+
+    map.value?.addLayer(childrenLayer);
+  }
+
   // console.log(wrapperGeoData.json.features[0].properties.name);
-
   // clearLayers();
-
-  // const childrenLayer = L.geoJSON(data.children_data, {
-  //   style: { color: '#38f8ff', fillOpacity: 0.2, weight: 1 },
-  //   onEachFeature: ({ properties }, layer) => {
-  //     layer.on('click', async () => {
-  //       console.log(`${properties.adcode}: ${properties.name}`);
-
   //       await getData(properties.adcode);
-  //     });
-  //     layer.on('mouseover', () => {
-  //       const item = layer as L.Path;
-
-  //       item.bringToFront();
-  //       setTimeout(() => {
-  //         item.setStyle({ fillColor: '#ffffff', fillOpacity: 0.4 });
-  //       });
-  //     });
-  //     layer.on('mouseout', () => {
-  //       const item = layer as L.Path;
-
-  //       setTimeout(() => {
-  //         item.setStyle({ fillColor: '#38f8ff', fillOpacity: 0.2 });
-  //       });
-  //     });
-  //   },
-  // });
-
-  // map.value?.addLayer(childrenLayer);
 };
 
 // const clearLayers = () => {
