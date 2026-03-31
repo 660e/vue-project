@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { CRS_4490, getGeoData, getMaskCoords } from '.';
+import { baseLayers, CRS_4490, getGeoData, getMaskCoords } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
+const layerStore = new Map<string, L.Layer>();
 
 onMounted(async () => {
   map.value = L.map('map', {
@@ -12,7 +13,7 @@ onMounted(async () => {
     minZoom: 4,
     zoomControl: false,
   });
-  // baseLayers.forEach((layer) => layer.addTo(map.value!));
+  baseLayers.forEach((layer) => layer.addTo(map.value!));
 
   await getData('650000');
 });
@@ -20,14 +21,16 @@ onMounted(async () => {
 const getData = async (adcode: string) => {
   const wrapperGeoData = await getGeoData(adcode);
   const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
-    style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
+    style: { color: '#38f8ff', fillOpacity: wrapperGeoData.isLeaf ? 0.2 : 0, weight: 3 },
   });
-  const maskCoords = getMaskCoords(wrapperGeoData.json.features);
 
+  const maskCoords = getMaskCoords(wrapperGeoData.json.features);
   console.log(maskCoords);
 
+  clearLayers(['wrapper', 'children']);
+
   map.value?.addLayer(wrapperLayer);
-  map.value?.fitBounds(wrapperLayer.getBounds());
+  layerStore.set('wrapper', wrapperLayer);
 
   if (!wrapperGeoData.isLeaf) {
     const childrenGeoData = await getGeoData(adcode, true);
@@ -36,6 +39,7 @@ const getData = async (adcode: string) => {
       onEachFeature: ({ properties }, layer) => {
         layer.on('click', async () => {
           console.log(`${properties.adcode}: ${properties.name}`);
+          await getData(properties.adcode);
         });
         layer.on('mouseover', () => {
           (layer as L.Path).setStyle({ fillColor: '#ffffff', fillOpacity: 0.4 });
@@ -47,20 +51,21 @@ const getData = async (adcode: string) => {
     });
 
     map.value?.addLayer(childrenLayer);
+    layerStore.set('children', childrenLayer);
   }
 
-  // console.log(wrapperGeoData.json.features[0].properties.name);
-  // clearLayers();
-  //       await getData(properties.adcode);
+  map.value?.fitBounds(wrapperLayer.getBounds());
 };
 
-// const clearLayers = () => {
-//   map.value?.eachLayer((layer) => {
-//     if (layer instanceof L.TileLayer) return;
-
-//     map.value?.removeLayer(layer);
-//   });
-// };
+const clearLayers = (layers: string[]) => {
+  if (!map.value) return;
+  layers.forEach((layer) => {
+    if (layerStore.has(layer)) {
+      map.value?.removeLayer(layerStore.get(layer)!);
+      layerStore.delete(layer);
+    }
+  });
+};
 
 // type LngLat = [number, number];
 // type LatLng = L.LatLngTuple;
