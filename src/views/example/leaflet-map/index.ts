@@ -23,14 +23,16 @@ export const CRS_4490 = new L.Proj.CRS('EPSG:4490', '+proj=longlat +ellps=GRS80 
   origin: [-180, 90],
 });
 
-export async function getGeoData(adcode: string, isFull?: boolean) {
+export async function getGeoData(adcode: number, isFull?: boolean) {
   const path = isFull ? `${adcode}_full` : adcode;
   const response = await fetch(`https://geo.datav.aliyun.com/areas_v3/bound/${path}.json`);
   const json = await response.json();
 
   return {
     isLeaf: json.features[0].properties.childrenNum === 0,
+    isRoot: json.features[0].properties.parent.adcode === 100000,
     json,
+    parent: json.features[0].properties.parent,
   };
 }
 

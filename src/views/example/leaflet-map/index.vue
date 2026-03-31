@@ -15,10 +15,10 @@ onMounted(async () => {
   });
   baseLayers.forEach((layer) => layer.addTo(map.value!));
 
-  await getData('650000');
+  await getData(650000);
 });
 
-const getData = async (adcode: string) => {
+const getData = async (adcode: number) => {
   const wrapperGeoData = await getGeoData(adcode);
   const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
     style: { color: '#38f8ff', fillOpacity: wrapperGeoData.isLeaf ? 0.2 : 0, weight: 3 },
@@ -27,6 +27,12 @@ const getData = async (adcode: string) => {
   const maskLayer = L.polygon(maskCoords, { color: '#000000', weight: 0, fillOpacity: 0.5 });
 
   clearLayers(['mask', 'wrapper', 'children']);
+
+  maskLayer.on('click', async () => {
+    if (!wrapperGeoData.isRoot) {
+      await getData(wrapperGeoData.parent.adcode);
+    }
+  });
 
   map.value?.addLayer(maskLayer);
   layerStore.set('mask', maskLayer);
