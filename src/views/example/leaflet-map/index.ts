@@ -38,6 +38,7 @@ export async function getGeoData(adcode: number, isFull?: boolean) {
 
 export function getMaskCoords(features: Feature[]) {
   const rings = features.flatMap(({ geometry }) => {
+    console.log(geometry);
     return geometry.coordinates.flatMap((polygon) => {
       return polygon.flatMap((ring) => ring.map(([lng, lat]) => [lat, lng]));
     });

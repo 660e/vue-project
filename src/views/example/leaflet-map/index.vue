@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490, getGeoData, getMaskCoords } from '.';
+import { CRS_4490, getGeoData, getMaskCoords } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -13,9 +13,9 @@ onMounted(async () => {
     minZoom: 4,
     zoomControl: false,
   });
-  baseLayers.forEach((layer) => layer.addTo(map.value!));
+  // baseLayers.forEach((layer) => layer.addTo(map.value!));
 
-  await getData(650000);
+  await getData(653200);
 });
 
 const getData = async (adcode: number) => {
