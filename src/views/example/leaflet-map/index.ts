@@ -3,7 +3,7 @@ import L from 'leaflet';
 
 interface Feature {
   geometry: {
-    coordinates: L.LatLngExpression[][][][];
+    coordinates: [number, number][][][];
     type: 'MultiPolygon';
   };
 }
@@ -38,11 +38,17 @@ export async function getGeoData(adcode: number, isFull?: boolean) {
 
 export function getMaskCoords(features: Feature[]) {
   const rings = features.flatMap(({ geometry }) => {
-    console.log(geometry);
-    return geometry.coordinates.flatMap((polygon) => {
-      return polygon.flatMap((ring) => ring.map(([lng, lat]) => [lat, lng]));
-    });
+    return geometry.coordinates.flatMap((polygon) => polygon.map((ring) => ring.map(([lng, lat]) => [lat, lng])));
   });
 
-  return [[-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180], ...rings] as L.LatLngExpression[][];
+  return [
+    [
+      [-90, -180],
+      [-90, 180],
+      [90, 180],
+      [90, -180],
+      [-90, -180],
+    ],
+    ...rings,
+  ] as L.LatLngExpression[][];
 }

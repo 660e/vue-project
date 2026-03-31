@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CRS_4490, getGeoData, getMaskCoords } from '.';
+import { baseLayers, CRS_4490, getGeoData, getMaskCoords } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -13,9 +13,9 @@ onMounted(async () => {
     minZoom: 4,
     zoomControl: false,
   });
-  // baseLayers.forEach((layer) => layer.addTo(map.value!));
+  baseLayers.forEach((layer) => layer.addTo(map.value!));
 
-  await getData(653200);
+  await getData(650000);
 });
 
 const getData = async (adcode: number) => {
@@ -74,62 +74,6 @@ const clearLayers = (layers: string[]) => {
     }
   });
 };
-
-// type LngLat = [number, number];
-// type LatLng = L.LatLngTuple;
-
-// interface PolygonGeometry {
-//   type: 'Polygon';
-//   coordinates: LngLat[][];
-// }
-
-// interface MultiPolygonGeometry {
-//   type: 'MultiPolygon';
-//   coordinates: LngLat[][][];
-// }
-
-// type MaskFeature = {
-//   geometry: PolygonGeometry | MultiPolygonGeometry;
-// };
-
-//       const worldRing: LatLng[] = [
-//         [90, -180],
-//         [90, 180],
-//         [-90, 180],
-//         [-90, -180],
-//       ];
-//       const maskRings: LatLng[][] = [worldRing, ...getMaskCoordinates(data.features[0])];
-
-//       const maskLayer = L.polygon(maskRings, {
-//         color: 'yellow',
-//         weight: 0,
-//         fillOpacity: 0.2,
-//       }).addTo(map.value!);
-
-//       maskLayer.on('click', () => {
-//         console.log('点击了省外区域');
-//       });
-//     });
-
-// function getMaskCoordinates(feature: MaskFeature): LatLng[][] {
-//   const coordsArray: LatLng[][] = [];
-
-//   if (feature.geometry.type === 'Polygon') {
-//     // Polygon: 第一个环是外层，其余是洞
-//     const polygonCoords = feature.geometry.coordinates.map((ring) => ring.map(([lng, lat]: LngLat): LatLng => [lat, lng]));
-//     coordsArray.push(...polygonCoords);
-//   }
-
-//   if (feature.geometry.type === 'MultiPolygon') {
-//     // MultiPolygon: 每个 polygon 的第一个环是外层，其余是洞
-//     feature.geometry.coordinates.forEach((polygon) => {
-//       const polygonCoords = polygon.map((ring) => ring.map(([lng, lat]: LngLat): LatLng => [lat, lng]));
-//       coordsArray.push(...polygonCoords);
-//     });
-//   }
-
-//   return coordsArray;
-// }
 </script>
 
 <template>
