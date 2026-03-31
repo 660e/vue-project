@@ -19,10 +19,15 @@ onMounted(async () => {
 
 const getData = async (adcode: string) => {
   const wrapperGeoData = await getGeoData(adcode);
-
   const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
     style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
   });
+  const maskCoords = getMaskCoordinates(wrapperGeoData.json.features);
+
+  console.log(maskCoords);
+
+  map.value?.addLayer(wrapperLayer);
+  map.value?.fitBounds(wrapperLayer.getBounds());
 
   // console.log(wrapperGeoData.json.features[0].properties.name);
 
@@ -54,14 +59,7 @@ const getData = async (adcode: string) => {
   //   },
   // });
 
-  const maskCoords = getMaskCoordinates(wrapperGeoData.json.features);
-
-  console.log(maskCoords);
-
-  map.value?.addLayer(wrapperLayer);
   // map.value?.addLayer(childrenLayer);
-
-  map.value?.fitBounds(wrapperLayer.getBounds());
 };
 
 // const clearLayers = () => {
