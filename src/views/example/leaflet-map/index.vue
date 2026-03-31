@@ -79,10 +79,13 @@ onMounted(async () => {
           });
 
           layer.on('mouseover', function () {
-            (layer as L.Path).setStyle({
-              color: 'red',
-              weight: 2, // 加粗
-              fillOpacity: 0.2, // 半透明填充
+            (layer as L.Path).bringToFront();
+            setTimeout(() => {
+              (layer as L.Path).setStyle({
+                color: 'red',
+                weight: 2, // 加粗
+                fillOpacity: 0.2, // 半透明填充
+              });
             });
           });
 
