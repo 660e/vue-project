@@ -10,7 +10,7 @@ interface Feature {
 
 const EGIS_TOKEN = 'Basic ODkzNzgyMGVlNjQ2NDVjNmIxMzM1ZDY4ZmQzMjFkYjM6YmRmMmU4NzE4NDgxNGE5MGExMmU4NzM3NzRiYTI3Zjk=';
 
-export const baseLayers = ['kd', 'cia'].map((key) => {
+export const baseLayers = ['kd'].map((key) => {
   return L.tileLayer(`/EGIS/service/api/egis/base/v1/wmts/1.0.0/${key}/default/tiles/c/{z}/{y}/{x}.png?Authorization=${EGIS_TOKEN}`);
 });
 

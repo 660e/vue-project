@@ -4,6 +4,7 @@ import L from 'leaflet';
 
 const map = ref<L.Map>();
 const layerStore = new Map<string, L.Layer>();
+const currentLatLng = ref<L.LatLng>();
 
 onMounted(async () => {
   map.value = L.map('map', {
@@ -16,6 +17,10 @@ onMounted(async () => {
   baseLayers.forEach((layer) => layer.addTo(map.value!));
 
   await getData(650000);
+
+  map.value.on('mousemove', (e) => {
+    currentLatLng.value = e.latlng;
+  });
 });
 
 const getData = async (adcode: number) => {
@@ -77,7 +82,10 @@ const clearLayers = (layers: string[]) => {
 </script>
 
 <template>
-  <div class="h-screen">
+  <div class="h-screen relative">
     <div class="h-full" id="map"></div>
+    <div v-if="currentLatLng" class="absolute z-1000 left-4 bottom-4 p-2 rounded text-xs leading-none font-mono bg-black/50 text-white">
+      Lat: {{ currentLatLng?.lat.toFixed(6) }}, Lng: {{ currentLatLng?.lng.toFixed(6) }}
+    </div>
   </div>
 </template>
