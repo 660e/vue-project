@@ -3,7 +3,7 @@ import L from 'leaflet';
 
 interface Feature {
   geometry: {
-    coordinates: number[][][][];
+    coordinates: L.LatLngExpression[][][][];
     type: 'MultiPolygon';
   };
 }
@@ -41,5 +41,5 @@ export function getMaskCoords(features: Feature[]) {
     });
   });
 
-  return [[-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180], ...rings];
+  return [[-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180], ...rings] as L.LatLngExpression[][];
 }
