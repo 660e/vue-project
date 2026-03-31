@@ -23,11 +23,13 @@ const getData = async (adcode: string) => {
   const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
     style: { color: '#38f8ff', fillOpacity: wrapperGeoData.isLeaf ? 0.2 : 0, weight: 3 },
   });
-
   const maskCoords = getMaskCoords(wrapperGeoData.json.features);
-  console.log(maskCoords);
+  const maskLayer = L.polygon(maskCoords, { color: '#000000', weight: 0, fillOpacity: 0.5 });
 
-  clearLayers(['wrapper', 'children']);
+  clearLayers(['mask', 'wrapper', 'children']);
+
+  map.value?.addLayer(maskLayer);
+  layerStore.set('mask', maskLayer);
 
   map.value?.addLayer(wrapperLayer);
   layerStore.set('wrapper', wrapperLayer);
