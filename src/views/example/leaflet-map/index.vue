@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490, getWrapperGeoData, getMaskCoordinates } from '.';
+import { baseLayers, CRS_4490, getGeoData, getMaskCoordinates } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -18,7 +18,11 @@ onMounted(async () => {
 });
 
 const getData = async (adcode: string) => {
-  const wrapperGeoData = await getWrapperGeoData(adcode);
+  const wrapperGeoData = await getGeoData(adcode);
+
+  const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
+    style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
+  });
 
   // console.log(wrapperGeoData.json.features[0].properties.name);
 
@@ -49,9 +53,6 @@ const getData = async (adcode: string) => {
   //     });
   //   },
   // });
-  const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
-    style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
-  });
 
   const maskCoords = getMaskCoordinates(wrapperGeoData.json.features);
 
