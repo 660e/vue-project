@@ -23,16 +23,23 @@ export const CRS_4490 = new L.Proj.CRS('EPSG:4490', '+proj=longlat +ellps=GRS80 
   origin: [-180, 90],
 });
 
-export async function getGeoJSON(adcode: string) {
-  const childrenResponse = await fetch(`https://geo.datav.aliyun.com/areas_v3/bound/${adcode}_full.json`);
-  const wrapperResponse = await fetch(`https://geo.datav.aliyun.com/areas_v3/bound/${adcode}.json`);
+export async function getWrapperGeoData(adcode: string) {
+  const response = await fetch(`https://geo.datav.aliyun.com/areas_v3/bound/${adcode}.json`);
+  const json = await response.json();
 
   return {
-    adcode,
-    children_data: await childrenResponse.json(),
-    wrapper_data: await wrapperResponse.json(),
+    isLeaf: json.features[0].properties.childrenNum === 0,
+    json,
   };
 }
+
+// export async function getChildrenGeoJSON(adcode: string) {
+//   const response = await fetch(`https://geo.datav.aliyun.com/areas_v3/bound/${adcode}_full.json`);
+
+//   return {
+//     json: await response.json(),
+//   };
+// }
 
 export function getMaskCoordinates(features: Feature[]) {
   features.forEach(({ geometry }) => {

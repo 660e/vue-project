@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490, getGeoJSON, getMaskCoordinates } from '.';
+import { baseLayers, CRS_4490, getWrapperGeoData, getMaskCoordinates } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -18,44 +18,58 @@ onMounted(async () => {
 });
 
 const getData = async (adcode: string) => {
-  const data = await getGeoJSON(adcode);
+  const wrapperGeoData = await getWrapperGeoData(adcode);
 
-  const childrenLayer = L.geoJSON(data.children_data, {
-    style: { color: '#38f8ff', fillOpacity: 0.2, weight: 1 },
-    onEachFeature: ({ properties }, layer) => {
-      layer.on('click', () => {
-        console.log(`${properties.adcode}: ${properties.name}`);
-      });
-      layer.on('mouseover', () => {
-        const item = layer as L.Path;
+  // console.log(wrapperGeoData.json.features[0].properties.name);
 
-        item.bringToFront();
-        setTimeout(() => {
-          item.setStyle({ fillColor: '#ffffff', fillOpacity: 0.4 });
-        });
-      });
-      layer.on('mouseout', () => {
-        const item = layer as L.Path;
+  // clearLayers();
 
-        setTimeout(() => {
-          item.setStyle({ fillColor: '#38f8ff', fillOpacity: 0.2 });
-        });
-      });
-    },
-  });
-  const wrapperLayer = L.geoJSON(data.wrapper_data, {
+  // const childrenLayer = L.geoJSON(data.children_data, {
+  //   style: { color: '#38f8ff', fillOpacity: 0.2, weight: 1 },
+  //   onEachFeature: ({ properties }, layer) => {
+  //     layer.on('click', async () => {
+  //       console.log(`${properties.adcode}: ${properties.name}`);
+
+  //       await getData(properties.adcode);
+  //     });
+  //     layer.on('mouseover', () => {
+  //       const item = layer as L.Path;
+
+  //       item.bringToFront();
+  //       setTimeout(() => {
+  //         item.setStyle({ fillColor: '#ffffff', fillOpacity: 0.4 });
+  //       });
+  //     });
+  //     layer.on('mouseout', () => {
+  //       const item = layer as L.Path;
+
+  //       setTimeout(() => {
+  //         item.setStyle({ fillColor: '#38f8ff', fillOpacity: 0.2 });
+  //       });
+  //     });
+  //   },
+  // });
+  const wrapperLayer = L.geoJSON(wrapperGeoData.json, {
     style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
   });
 
-  const maskCoords = getMaskCoordinates(data.wrapper_data.features);
+  const maskCoords = getMaskCoordinates(wrapperGeoData.json.features);
 
   console.log(maskCoords);
 
   map.value?.addLayer(wrapperLayer);
-  map.value?.addLayer(childrenLayer);
+  // map.value?.addLayer(childrenLayer);
 
   map.value?.fitBounds(wrapperLayer.getBounds());
 };
+
+// const clearLayers = () => {
+//   map.value?.eachLayer((layer) => {
+//     if (layer instanceof L.TileLayer) return;
+
+//     map.value?.removeLayer(layer);
+//   });
+// };
 
 // type LngLat = [number, number];
 // type LatLng = L.LatLngTuple;
