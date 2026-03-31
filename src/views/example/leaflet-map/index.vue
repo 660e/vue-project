@@ -19,9 +19,37 @@ onMounted(async () => {
 
 const getData = async (adcode: string) => {
   const data = await getGeoJSON(adcode);
-  const wrapperLayer = L.geoJSON(data.wrapper_data).addTo(map.value!);
 
-  map.value!.fitBounds(wrapperLayer.getBounds());
+  const childrenLayer = L.geoJSON(data.children_data, {
+    style: { color: '#38f8ff', fillOpacity: 0.2, weight: 1 },
+    onEachFeature: ({ properties }, layer) => {
+      layer.on('mouseover', () => {
+        const item = layer as L.Path;
+
+        item.bringToFront();
+        setTimeout(() => {
+          item.setStyle({ fillColor: '#ffffff', fillOpacity: 0.4 });
+        });
+      });
+      layer.on('mouseout', () => {
+        const item = layer as L.Path;
+
+        setTimeout(() => {
+          item.setStyle({ fillColor: '#38f8ff', fillOpacity: 0.2 });
+        });
+      });
+
+      console.log(properties);
+    },
+  });
+  const wrapperLayer = L.geoJSON(data.wrapper_data, {
+    style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
+  });
+
+  map.value?.addLayer(wrapperLayer);
+  map.value?.addLayer(childrenLayer);
+
+  map.value?.fitBounds(wrapperLayer.getBounds());
 };
 
 // type LngLat = [number, number];
@@ -41,30 +69,6 @@ const getData = async (adcode: string) => {
 //   geometry: PolygonGeometry | MultiPolygonGeometry;
 // };
 
-// (async () => {
-//
-//
-//     // center: [41.75514499999999, 84.94633349999998],
-//
-//
-//
-//     // zoom: 6,
-//   });
-//
-
-//   fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000.json')
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const provinceLayer = L.geoJSON(data, {
-//         style: {
-//           // color: '#38f8ff',
-//           weight: 3,
-//           fillOpacity: 0,
-//         },
-//       }).addTo(map.value!);
-
-//       map.value!.fitBounds(provinceLayer.getBounds());
-
 //       const worldRing: LatLng[] = [
 //         [90, -180],
 //         [90, 180],
@@ -83,44 +87,6 @@ const getData = async (adcode: string) => {
 //         console.log('点击了省外区域');
 //       });
 //     });
-//   fetch('')
-//     .then((response) => response.json())
-//     .then((data) => {
-//       L.geoJSON(data, {
-//         style: {
-//           color: '#38f8ff',
-//           weight: 1,
-//         },
-//         onEachFeature: ({ properties }, layer) => {
-//           layer.on('click', () => {
-//             const { adcode, name } = properties;
-
-//             console.log(`${}-${name} `);
-//           });
-
-//           layer.on('mouseover', function () {
-//             (layer as L.Path).bringToFront();
-//             setTimeout(() => {
-//               (layer as L.Path).setStyle({
-//                 color: 'red',
-//                 weight: 2, // 加粗
-//                 fillOpacity: 0.2, // 半透明填充
-//               });
-//             });
-//           });
-
-//           // 鼠标移出
-//           layer.on('mouseout', function () {
-//             (layer as L.Path).setStyle({
-//               color: '#38f8ff',
-//               weight: 1,
-//               fillOpacity: 0,
-//             });
-//           });
-//         },
-//       }).addTo(map.value!);
-//     });
-// });
 
 // function getMaskCoordinates(feature: MaskFeature): LatLng[][] {
 //   const coordsArray: LatLng[][] = [];
@@ -148,9 +114,3 @@ const getData = async (adcode: string) => {
     <div class="h-full" id="map"></div>
   </div>
 </template>
-<!-- 
-<style>
-.leaflet-interactive {
-  transition: all 0.2s ease;
-}
-</style> -->
