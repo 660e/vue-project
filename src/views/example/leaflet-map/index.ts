@@ -1,6 +1,13 @@
 import 'proj4leaflet';
 import L from 'leaflet';
 
+interface Feature {
+  geometry: {
+    coordinates: number[][][];
+    type: 'MultiPolygon';
+  };
+}
+
 const EGIS_TOKEN = 'Basic ODkzNzgyMGVlNjQ2NDVjNmIxMzM1ZDY4ZmQzMjFkYjM6YmRmMmU4NzE4NDgxNGE5MGExMmU4NzM3NzRiYTI3Zjk=';
 
 export const baseLayers = ['kd', 'cia'].map((key) => {
@@ -25,4 +32,19 @@ export async function getGeoJSON(adcode: string) {
     children_data: await childrenResponse.json(),
     wrapper_data: await wrapperResponse.json(),
   };
+}
+
+export function getMaskCoordinates(features: Feature[]) {
+  features.forEach(({ geometry }) => {
+    console.log(geometry.coordinates);
+    console.log(geometry.type);
+  });
+
+  return [
+    [-90, -180],
+    [-90, 180],
+    [90, 180],
+    [90, -180],
+    [-90, -180],
+  ];
 }

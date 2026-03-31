@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490, getGeoJSON } from '.';
+import { baseLayers, CRS_4490, getGeoJSON, getMaskCoordinates } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
@@ -23,6 +23,9 @@ const getData = async (adcode: string) => {
   const childrenLayer = L.geoJSON(data.children_data, {
     style: { color: '#38f8ff', fillOpacity: 0.2, weight: 1 },
     onEachFeature: ({ properties }, layer) => {
+      layer.on('click', () => {
+        console.log(`${properties.adcode}: ${properties.name}`);
+      });
       layer.on('mouseover', () => {
         const item = layer as L.Path;
 
@@ -38,13 +41,15 @@ const getData = async (adcode: string) => {
           item.setStyle({ fillColor: '#38f8ff', fillOpacity: 0.2 });
         });
       });
-
-      console.log(properties);
     },
   });
   const wrapperLayer = L.geoJSON(data.wrapper_data, {
     style: { color: '#38f8ff', fillOpacity: 0, weight: 3 },
   });
+
+  const maskCoords = getMaskCoordinates(data.wrapper_data.features);
+
+  console.log(maskCoords);
 
   map.value?.addLayer(wrapperLayer);
   map.value?.addLayer(childrenLayer);
