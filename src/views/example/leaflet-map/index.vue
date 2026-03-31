@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { baseLayers, CRS_4490 } from '.';
+import { baseLayers, CRS_4490, getGeoJSON } from '.';
 import L from 'leaflet';
 
 const map = ref<L.Map>();
 
-onMounted(() => {
+onMounted(async () => {
   map.value = L.map('map', {
     attributionControl: false,
     crs: CRS_4490,
@@ -13,7 +13,16 @@ onMounted(() => {
     zoomControl: false,
   });
   baseLayers.forEach((layer) => layer.addTo(map.value!));
+
+  await getData('650000');
 });
+
+const getData = async (adcode: string) => {
+  const data = await getGeoJSON(adcode);
+  const wrapperLayer = L.geoJSON(data.wrapper_data).addTo(map.value!);
+
+  map.value!.fitBounds(wrapperLayer.getBounds());
+};
 
 // type LngLat = [number, number];
 // type LatLng = L.LatLngTuple;
@@ -74,7 +83,7 @@ onMounted(() => {
 //         console.log('点击了省外区域');
 //       });
 //     });
-//   fetch('https://geo.datav.aliyun.com/areas_v3/bound/650000_full.json')
+//   fetch('')
 //     .then((response) => response.json())
 //     .then((data) => {
 //       L.geoJSON(data, {
@@ -86,7 +95,7 @@ onMounted(() => {
 //           layer.on('click', () => {
 //             const { adcode, name } = properties;
 
-//             console.log(`${adcode}-${name} `);
+//             console.log(`${}-${name} `);
 //           });
 
 //           layer.on('mouseover', function () {
