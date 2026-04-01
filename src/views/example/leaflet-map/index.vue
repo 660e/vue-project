@@ -2,6 +2,8 @@
 import { baseLayers, CRS_4490, getGeoData, getMaskCoords } from '.';
 import L from 'leaflet';
 
+import Coordinate from './Coordinate.vue';
+
 const map = ref<L.Map>();
 const layerStore = new Map<string, L.Layer>();
 const currentLatLng = ref<L.LatLng>();
@@ -84,8 +86,7 @@ const clearLayers = (layers: string[]) => {
 <template>
   <div class="h-screen relative">
     <div class="h-full" id="map"></div>
-    <div v-if="currentLatLng" class="absolute z-1000 left-4 bottom-4 p-2 rounded text-xs leading-none font-mono bg-black/50 text-white">
-      Lat: {{ currentLatLng?.lat.toFixed(6) }}, Lng: {{ currentLatLng?.lng.toFixed(6) }}
-    </div>
+
+    <Coordinate v-if="currentLatLng" :latlng="currentLatLng" />
   </div>
 </template>
