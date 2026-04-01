@@ -87,6 +87,6 @@ const clearLayers = (layers: string[]) => {
   <div class="h-screen relative">
     <div class="h-full" id="map"></div>
 
-    <Coordinate v-if="currentLatLng" :latlng="currentLatLng" />
+    <Coordinate :latlng="currentLatLng" />
   </div>
 </template>
