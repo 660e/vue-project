@@ -14,11 +14,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@lucide/vue": "^1.7.0",
     "@vueuse/core": "^12.8.2",
     "axios": "^1.14.0",
     "dayjs": "^1.11.20",
     "leaflet": "^1.9.4",
-    "lucide-vue-next": "^0.577.0",
     "marked": "^15.0.12",
     "pinia": "^2.3.1",
     "proj4leaflet": "^1.0.2",
